@@ -4,6 +4,26 @@
         <name>WinTuner.Core</name>
     </assembly>
     <members>
+        <member name="T:WinTuner.Core.Profile.ProfileService">
+            <summary>
+            Captures the current live state of every tweak and re-applies a captured
+            configuration. Pure logic - no UI, fully unit-testable, so the headless
+            test suite can verify export/import without a window.
+            </summary>
+        </member>
+        <member name="M:WinTuner.Core.Profile.ProfileService.Export(System.Collections.Generic.IEnumerable{WinTuner.Core.Tweaks.RegistryTweak},WinTuner.Core.Tweaks.TweakEngine)">
+            <summary>Serializes the current state of each tweak to an indented JSON document.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Profile.ProfileService.Parse(System.String)">
+            <summary>Parses a JSON profile document. Returns an empty map if the input is invalid.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Profile.ProfileService.Apply(System.Collections.Generic.IEnumerable{WinTuner.Core.Tweaks.RegistryTweak},System.Collections.Generic.Dictionary{System.String,System.String},WinTuner.Core.Tweaks.TweakEngine)">
+            <summary>
+            Re-applies a captured profile: tweaks recorded as Enabled are applied,
+            every other recorded tweak is reverted. Tweaks absent from the profile
+            are left untouched. Safe to call repeatedly (idempotent).
+            </summary>
+        </member>
         <member name="T:WinTuner.Core.Registry.FakeRegistryProvider">
             <summary>
             In-memory registry for unit tests. Mirrors the subset of semantics the
@@ -97,6 +117,12 @@
         </member>
         <member name="M:WinTuner.Core.Tweaks.TweakEngine.GetState(WinTuner.Core.Tweaks.RegistryTweak)">
             <summary>Reads the current state of the tweak relative to its enabled/disabled values.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Tweaks.TweakEngine.ApplyOrRevert(WinTuner.Core.Tweaks.RegistryTweak,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
+            <summary>
+            Applies or reverts a tweak based on a desired state string ("Enabled"/"Disabled").
+            Used by profile import so a captured configuration can be replayed.
+            </summary>
         </member>
         <member name="T:WinTuner.Core.Tweaks.TweakState">
             <summary>Whether a tweak is currently active on the machine.</summary>

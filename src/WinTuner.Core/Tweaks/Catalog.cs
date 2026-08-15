@@ -871,5 +871,507 @@ public static class Catalog
             AbsentState = TweakState.Disabled,
             Reference = "HKCU\\Control Panel\\Mouse!MouseSpeed (string, '0' = off)",
         },
+
+        // ===================== EXPLORER (more) =====================
+        new()
+        {
+            Id = "explorer.show-status-bar",
+            Title = "Show the status bar in File Explorer",
+            Description = "Adds the bottom status bar (selection count, free space, etc.) to File Explorer " +
+                          "by setting ShowStatusBar=1. The default (0) hides it. Purely informational; no " +
+                          "behavioral change.",
+            Category = TweakCategory.Explorer,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+            ValueName = "ShowStatusBar",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Explorer\\Advanced!ShowStatusBar (1 = shown)",
+        },
+        new()
+        {
+            Id = "explorer.disable-sharing-wizard",
+            Title = "Use classic file sharing instead of the wizard",
+            Description = "Turns off the simplified 'Sharing Wizard' so the full advanced Sharing/security " +
+                          "dialog appears, by setting SharingWizardOn=0. The default (1) uses the consumer " +
+                          "wizard. Useful for precise NTFS/Share permission control.",
+            Category = TweakCategory.Explorer,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+            ValueName = "SharingWizardOn",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Explorer\\Advanced!SharingWizardOn (0 = classic)",
+        },
+        new()
+        {
+            Id = "explorer.item-checkboxes",
+            Title = "Show checkboxes to select items",
+            Description = "Shows selection checkboxes next to files/folders in Explorer so you can multi-select " +
+                          "by clicking them, by setting AutoCheckSelect=1. The default (0) hides the checkboxes.",
+            Category = TweakCategory.Explorer,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+            ValueName = "AutoCheckSelect",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Explorer\\Advanced!AutoCheckSelect (1 = on)",
+        },
+        new()
+        {
+            Id = "explorer.expand-nav-to-current",
+            Title = "Expand navigation pane to current folder",
+            Description = "Makes the File Explorer navigation pane automatically expand to reveal the folder " +
+                          "you are currently in, by setting NavPaneExpandToCurrentFolder=1. The default (0) keeps " +
+                          "the tree collapsed. Navigational convenience only.",
+            Category = TweakCategory.Explorer,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+            ValueName = "NavPaneExpandToCurrentFolder",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Explorer\\Advanced!NavPaneExpandToCurrentFolder (1 = on)",
+        },
+        new()
+        {
+            Id = "explorer.hide-frequent-folders",
+            Title = "Hide frequent folders in Quick Access",
+            Description = "Removes the 'Frequent folders' section from Quick Access by setting ShowFrequent=0. " +
+                          "The default (1) shows recently/frequently used folders there. Improves a clean " +
+                          "navigation pane.",
+            Category = TweakCategory.Explorer,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+            ValueName = "ShowFrequent",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Explorer\\Advanced!ShowFrequent (0 = hidden, 1 = shown)",
+        },
+
+        // ===================== PRIVACY (more) =====================
+        new()
+        {
+            Id = "privacy.disable-activity-history",
+            Title = "Disable activity history (Timeline)",
+            Description = "Stops Windows from collecting and uploading your activity history used for Timeline " +
+                          "and cross-device resume, by setting ActivityPicker EnableActivityFeed=0. The default " +
+                          "(1) collects it. A sign-out/in may be required to fully stop upload.",
+            Category = TweakCategory.Privacy,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\ActivityPicker",
+            ValueName = "EnableActivityFeed",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\ActivityPicker!EnableActivityFeed (0 = off)",
+        },
+        new()
+        {
+            Id = "privacy.disable-location",
+            Title = "Disable location services",
+            Description = "Turns off the OS location service (used by maps, weather, and some apps) by setting " +
+                          "Sensor Permissions Location EnableLocation=0. The default (1) allows location access. " +
+                          "Apps that need location will no longer receive it.",
+            Category = TweakCategory.Privacy,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows NT\CurrentVersion\Sensor Permissions\Location",
+            ValueName = "EnableLocation",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Sensor Permissions\\Location!EnableLocation (0 = off)",
+        },
+        new()
+        {
+            Id = "privacy.disable-error-reporting",
+            Title = "Disable Windows Error Reporting uploads",
+            Description = "Stops Windows from sending crash/error reports to Microsoft by setting Windows Error " +
+                          "Reporting Disabled=1. The default (absent) allows reporting. Requires elevation; local " +
+                          "crash logs still accrue, only the upload is stopped.",
+            Category = TweakCategory.Privacy,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Microsoft\Windows\Windows Error Reporting",
+            ValueName = "Disabled",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = null,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Windows Error Reporting!Disabled (1 = off)",
+        },
+        new()
+        {
+            Id = "privacy.disable-settings-suggestions",
+            Title = "Disable suggested content in Settings",
+            Description = "Removes Microsoft's suggested apps and content rows inside the Settings app " +
+                          "(ContentDeliveryManager SubscribedContent-338893=0). The default (1) shows them. " +
+                          "Reduces promotional noise in Settings.",
+            Category = TweakCategory.Privacy,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager",
+            ValueName = "SubscribedContent-338893",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\ContentDeliveryManager!SubscribedContent-338893 (0 = off)",
+        },
+
+        // ===================== PERFORMANCE (more) =====================
+        new()
+        {
+            Id = "performance.disable-ndu",
+            Title = "Disable NDU (network data usage) service",
+            Description = "Sets the Ndu service Start value to 4 (disabled). Ndu monitors per-process network " +
+                          "usage; disabling it can slightly improve network throughput on some systems but " +
+                          "removes data-usage stats. REQUIRES ELEVATION and a reboot. Reset deletes the value.",
+            Category = TweakCategory.Performance,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Services\Ndu",
+            ValueName = "Start",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 4,
+            DisabledValue = 2,
+            DefaultValue = null,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Services\\Ndu!Start (4 = disabled)",
+        },
+        new()
+        {
+            Id = "performance.prioritize-foreground",
+            Title = "Prioritize foreground apps (CPU)",
+            Description = "Biases the scheduler toward the foreground app by setting PriorityControl " +
+                          "Win32PrioritySeparation to 38 (hex 0x26). The default (2) is balanced. Can make the " +
+                          "active window feel more responsive at the cost of background tasks. Requires elevation.",
+            Category = TweakCategory.Performance,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Control\PriorityControl",
+            ValueName = "Win32PrioritySeparation",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 38,
+            DisabledValue = 2,
+            DefaultValue = 2,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\PriorityControl!Win32PrioritySeparation (38 = foreground)",
+        },
+
+        // ===================== APPEARANCE (more) =====================
+        new()
+        {
+            Id = "appearance.enable-aero-peek",
+            Title = "Enable Aero Peek (desktop preview)",
+            Description = "Restores the Aero Peek behavior (hover the taskbar show-desktop sliver to peek at the " +
+                          "desktop) by setting Advanced EnablePeek=1. The default (0) disables peek on modern " +
+                          "builds. Purely cosmetic.",
+            Category = TweakCategory.Appearance,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+            ValueName = "EnablePeek",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Explorer\\Advanced!EnablePeek (1 = on)",
+        },
+        new()
+        {
+            Id = "appearance.show-clock-seconds",
+            Title = "Show seconds in the taskbar clock",
+            Description = "Displays the seconds in the system tray clock by setting Advanced " +
+                          "ShowSecondsInSystemClock=1. The default (0) shows only hours:minutes. Minor; requires " +
+                          "a taskbar restart/sign-in to appear.",
+            Category = TweakCategory.Appearance,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+            ValueName = "ShowSecondsInSystemClock",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Explorer\\Advanced!ShowSecondsInSystemClock (1 = on)",
+        },
+        new()
+        {
+            Id = "appearance.disable-sticky-keys",
+            Title = "Disable the Sticky Keys shortcut prompt",
+            Description = "Stops the Sticky/Filter/Keys accessibility dialog from popping up when you press Shift " +
+                          "five times, by setting Accessibility StickyKeys Flags to 506. The default (510) enables " +
+                          "the shortcut. Accessibility tooling still works from Settings.",
+            Category = TweakCategory.Appearance,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Control Panel\Accessibility\StickyKeys",
+            ValueName = "Flags",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 506,
+            DisabledValue = 510,
+            DefaultValue = 510,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\Control Panel\\Accessibility\\StickyKeys!Flags (506 = disabled)",
+        },
+        new()
+        {
+            Id = "appearance.disable-tablet-mode",
+            Title = "Disable tablet mode auto-switching",
+            Description = "Forces Tablet Mode off (ImmersiveShell TabletMode=0) so convertible/touch devices stay " +
+                          "in desktop mode. The default (0) is desktop anyway; this locks it against automatic " +
+                          "switching on 2-in-1s. A sign-out/in may be needed.",
+            Category = TweakCategory.Appearance,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\ImmersiveShell",
+            ValueName = "TabletMode",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\ImmersiveShell!TabletMode (0 = desktop)",
+        },
+
+        // ===================== SYSTEM (more) =====================
+        new()
+        {
+            Id = "system.disable-lock-screen",
+            Title = "Disable the lock screen",
+            Description = "Skips the Windows lock screen before sign-in via the policy NoLockScreen=1. The default " +
+                          "(absent) shows the lock screen. Requires elevation; some Windows editions ignore this " +
+                          "policy on the sign-in screen.",
+            Category = TweakCategory.System,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Policies\Microsoft\Windows\Personalization",
+            ValueName = "NoLockScreen",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = null,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Personalization!NoLockScreen (policy; 1 = disabled)",
+        },
+        new()
+        {
+            Id = "system.disable-consumer-features",
+            Title = "Disable Windows consumer experiences",
+            Description = "Blocks consumer marketing/experiences (e.g. suggested apps, third-party promotions) via " +
+                          "the policy CloudContent DisableWindowsConsumerFeatures=1. The default (absent) allows " +
+                          "them. Requires elevation.",
+            Category = TweakCategory.System,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Policies\Microsoft\Windows\CloudContent",
+            ValueName = "DisableWindowsConsumerFeatures",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = null,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\CloudContent!DisableWindowsConsumerFeatures (policy; 1 = off)",
+        },
+        new()
+        {
+            Id = "system.disable-softlanding",
+            Title = "Disable Windows Spotlight / SoftLanding tips",
+            Description = "Turns off the rotating Windows Spotlight content and SoftLanding promotional tips via the " +
+                          "policy CloudContent DisableSoftLanding=1. The default (absent) allows them. Requires " +
+                          "elevation.",
+            Category = TweakCategory.System,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Policies\Microsoft\Windows\CloudContent",
+            ValueName = "DisableSoftLanding",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = null,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\CloudContent!DisableSoftLanding (policy; 1 = off)",
+        },
+        new()
+        {
+            Id = "system.disable-cortana",
+            Title = "Disable Cortana",
+            Description = "Removes Cortana from search and the system via the policy Windows Search AllowCortana=0. " +
+                          "The default (absent) allows it. Requires elevation; Reset deletes the policy. Note: " +
+                          "modern Windows already separates Cortana from search for many users.",
+            Category = TweakCategory.System,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Policies\Microsoft\Windows\Windows Search",
+            ValueName = "AllowCortana",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = null,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Windows Search!AllowCortana (policy; 0 = disabled)",
+        },
+        new()
+        {
+            Id = "system.disable-auto-reboot-updates",
+            Title = "Don't auto-reboot while logged on (updates)",
+            Description = "Stops Windows from automatically rebooting to finish updates while you are logged on, via " +
+                          "the policy WindowsUpdate AU NoAutoRebootWithLoggedOnUsers=1. The default (absent) allows " +
+                          "scheduled reboots. Requires elevation; you are still prompted to reboot manually.",
+            Category = TweakCategory.System,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU",
+            ValueName = "NoAutoRebootWithLoggedOnUsers",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = null,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\WindowsUpdate\\AU!NoAutoRebootWithLoggedOnUsers (policy; 1 = off)",
+        },
+
+        // ===================== SECURITY (more) =====================
+        new()
+        {
+            Id = "security.disable-llmnr",
+            Title = "Disable LLMNR name resolution",
+            Description = "Turns off Link-Local Multicast Name Resolution (Dnscache Parameters EnableLLMNR=0), a " +
+                          "legacy protocol that can be abused for local network spoofing. The default (1) enables " +
+                          "it. Requires elevation; DNS and NetBIOS (if enabled) still resolve names.",
+            Category = TweakCategory.Security,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Services\Dnscache\Parameters",
+            ValueName = "EnableLLMNR",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Dnscache\\Parameters!EnableLLMNR (0 = off)",
+        },
+        new()
+        {
+            Id = "security.enable-dep-all",
+            Title = "Enable DEP for all processes",
+            Description = "Sets Data Execution Prevention to 'Always On' (Memory Management NoExecute=3) so all " +
+                          "processes are protected against code execution in data memory. The default is OptOut (2). " +
+                          "REQUIRES ELEVATION and a reboot; very old software may be incompatible.",
+            Category = TweakCategory.Security,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management",
+            ValueName = "NoExecute",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 3,
+            DisabledValue = 2,
+            DefaultValue = 2,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Memory Management!NoExecute (3 = Always On)",
+        },
+        new()
+        {
+            Id = "security.disable-remote-assistance",
+            Title = "Disable Remote Assistance",
+            Description = "Prevents others from offering/requesting Remote Assistance to this PC by setting " +
+                          "Remote Assistance fAllowToGetHelp=0. The default (1) allows it. Requires elevation; " +
+                          "this is distinct from the separate Remote Desktop feature.",
+            Category = TweakCategory.Security,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Control\Remote Assistance",
+            ValueName = "fAllowToGetHelp",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Remote Assistance!fAllowToGetHelp (0 = disabled)",
+        },
+        new()
+        {
+            Id = "security.restrict-anonymous",
+            Title = "Restrict anonymous SID/name enumeration",
+            Description = "Blocks anonymous users from enumerating account names/SIDs via Lsa RestrictAnonymous=1, " +
+                          "closing a reconnaissance path on untrusted networks. The default (0) is permissive. " +
+                          "Requires elevation.",
+            Category = TweakCategory.Security,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Control\Lsa",
+            ValueName = "RestrictAnonymous",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Lsa!RestrictAnonymous (1 = restricted)",
+        },
+
+        // ===================== NETWORK (more) =====================
+        new()
+        {
+            Id = "network.disable-network-throttling",
+            Title = "Disable multimedia network throttling",
+            Description = "Stops Windows from throttling network throughput for 'multimedia' tuning by setting " +
+                          "Multimedia SystemProfile NetworkThrottlingIndex to 0xFFFFFFFF (-1, disabled). The " +
+                          "default (10) caps throughput. Requires elevation; can improve LAN transfer speeds.",
+            Category = TweakCategory.Network,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile",
+            ValueName = "NetworkThrottlingIndex",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = -1,
+            DisabledValue = 10,
+            DefaultValue = 10,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\SystemProfile!NetworkThrottlingIndex (0xFFFFFFFF = off)",
+        },
+        new()
+        {
+            Id = "network.disable-ncsi-probing",
+            Title = "Disable NCSI active Internet probing",
+            Description = "Stops the Network Connectivity Status Indicator from actively probing Microsoft's " +
+                          "servers to decide if the Internet is reachable (NlaSvc Internet EnableActiveProbing=0). " +
+                          "The default (1) probes. Requires elevation; the tray may report limited connectivity " +
+                          "even when online.",
+            Category = TweakCategory.Network,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Services\NlaSvc\Parameters\Internet",
+            ValueName = "EnableActiveProbing",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\NlaSvc\\Parameters\\Internet!EnableActiveProbing (0 = off)",
+        },
+
+        // ===================== GAMING (more) =====================
+        new()
+        {
+            Id = "gaming.disable-fullscreen-optimizations",
+            Title = "Disable fullscreen optimizations",
+            Description = "Forces fullscreen optimizations off system-wide (GameConfigStore GameDVR_FSEBehaviorMode=2) " +
+                          "so exclusive-fullscreen games bypass the DWM compositor, which can lower input latency. " +
+                          "The default (0) lets each game decide. May change alt-tab behavior.",
+            Category = TweakCategory.Gaming,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"System\GameConfigStore",
+            ValueName = "GameDVR_FSEBehaviorMode",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 2,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\System\\GameConfigStore!GameDVR_FSEBehaviorMode (2 = forced off)",
+        },
     };
 }

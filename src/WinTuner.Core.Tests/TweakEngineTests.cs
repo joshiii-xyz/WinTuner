@@ -222,4 +222,15 @@ public class TweakEngineTests
         var states = ProfileService.Parse("this is not json");
         Assert.Empty(states);
     }
+
+    [Fact]
+    public void Catalog_AllTweaks_HaveCitableReference_WithHiveToken()
+    {
+        foreach (var t in Catalog.All)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(t.Reference), $"Tweak {t.Id} has no reference.");
+            string expected = t.Hive == RegistryHive.LocalMachine ? "HKLM" : "HKCU";
+            Assert.Contains(expected, t.Reference, StringComparison.Ordinal);
+        }
+    }
 }

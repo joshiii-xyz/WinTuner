@@ -328,5 +328,37 @@ public static partial class Catalog
         AbsentState = TweakState.Disabled,
         Reference = "HKCU\\...\\Explorer\\Advanced!ShowTaskViewButton (0 = hidden)",
         },
+        new()
+        {
+        Id = "appearance.show-taskbar-all-displays",
+        Title = "Show taskbar on all displays",
+        Description = "Extends the taskbar to every monitor instead of just the primary one (Explorer Advanced MMTaskbarEnabled=1). The default (0) shows the taskbar only on the main display. Multi-monitor convenience; a taskbar restart/sign-in applies it.",
+        Category = TweakCategory.Appearance,
+        Hive = RegistryHive.CurrentUser,
+        SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+        ValueName = "MMTaskbarEnabled",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 1,
+        DisabledValue = 0,
+        DefaultValue = 0,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKCU\\...\\Explorer\\Advanced!MMTaskbarEnabled (1 = all displays)",
+        },
+        new()
+        {
+        Id = "appearance.taskbar-combine-when-full",
+        Title = "Combine taskbar buttons only when full",
+        Description = "Sets the taskbar to combine buttons of the same app only once it runs out of room (Explorer Advanced TaskbarGlomLevel=1). The default (0) always combines; 2 never combines. A middle-ground layout that needs a taskbar restart/sign-in to apply.",
+        Category = TweakCategory.Appearance,
+        Hive = RegistryHive.CurrentUser,
+        SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+        ValueName = "TaskbarGlomLevel",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 1,
+        DisabledValue = 0,
+        DefaultValue = 0,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKCU\\...\\Explorer\\Advanced!TaskbarGlomLevel (1 = when full)",
+        },
     };
 }

@@ -311,5 +311,37 @@ public static partial class Catalog
         AbsentState = TweakState.Disabled,
         Reference = "HKCU\\...\\ContentDeliveryManager!SubscribedContent-338387 (0 = off)",
         },
+        new()
+        {
+        Id = "privacy.disable-windows-spotlight-features",
+        Title = "Disable Windows Spotlight features",
+        Description = "Turns off Windows Spotlight (backgrounds, suggestions, and the consumer content pipeline) via the policy CloudContent DisableWindowsSpotlightFeatures=1. The default (absent) allows Spotlight. Requires elevation; reduces background content and network calls to Microsoft.",
+        Category = TweakCategory.Privacy,
+        Hive = RegistryHive.LocalMachine,
+        SubKey = @"SOFTWARE\Policies\Microsoft\Windows\CloudContent",
+        ValueName = "DisableWindowsSpotlightFeatures",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 1,
+        DisabledValue = 0,
+        DefaultValue = null,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKLM\\...\\CloudContent!DisableWindowsSpotlightFeatures (policy; 1 = off)",
+        },
+        new()
+        {
+        Id = "privacy.disable-customer-experience-program",
+        Title = "Disable Customer Experience Improvement",
+        Description = "Opts the machine out of Microsoft's Customer Experience Improvement Program (SQMClient CEIPEnable=0), which periodically uploads usage telemetry. The default (1) participates. Requires elevation; purely a diagnostic-data opt-out.",
+        Category = TweakCategory.Privacy,
+        Hive = RegistryHive.LocalMachine,
+        SubKey = @"SOFTWARE\Microsoft\SQMClient\Windows",
+        ValueName = "CEIPEnable",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 0,
+        DisabledValue = 1,
+        DefaultValue = 1,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKLM\\...\\SQMClient\\Windows!CEIPEnable (0 = off)",
+        },
     };
 }

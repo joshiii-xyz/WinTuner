@@ -24,6 +24,35 @@
             are left untouched. Safe to call repeatedly (idempotent).
             </summary>
         </member>
+        <member name="T:WinTuner.Core.Profile.SnapshotService">
+            <summary>
+            Captures the *raw* registry state of every known tweak to a JSON file and
+            restores it later. Unlike the engine's in-memory session backup (lost on
+            reboot), a snapshot is durable: it lets a user fully undo a set of tweaks
+            applied in a previous session - including restoring a value that did not
+            exist before (the entry is deleted on restore). Pure logic, no UI, so the
+            headless test suite verifies capture/restore without a window.
+            </summary>
+        </member>
+        <member name="M:WinTuner.Core.Profile.SnapshotService.Capture(System.Collections.Generic.IEnumerable{WinTuner.Core.Tweaks.RegistryTweak},WinTuner.Core.Tweaks.TweakEngine)">
+            <summary>Builds a serializable snapshot of the current raw state of every tweak.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Profile.SnapshotService.Export(System.Collections.Generic.IEnumerable{WinTuner.Core.Tweaks.RegistryTweak},WinTuner.Core.Tweaks.TweakEngine)">
+            <summary>Serializes a snapshot to an indented JSON document.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Profile.SnapshotService.Parse(System.String)">
+            <summary>
+            Parses a snapshot document. Returns null when the input is not a valid
+            snapshot, so callers can surface a clear error instead of silently doing nothing.
+            </summary>
+        </member>
+        <member name="M:WinTuner.Core.Profile.SnapshotService.Restore(System.Collections.Generic.IEnumerable{WinTuner.Core.Tweaks.RegistryTweak},System.Collections.Generic.Dictionary{System.String,WinTuner.Core.Profile.SnapshotService.Entry},WinTuner.Core.Tweaks.TweakEngine)">
+            <summary>
+            Restores every entry in the snapshot, matching by tweak Id. Restores the
+            original value (or deletes it when the snapshot recorded no value). Tweaks
+            whose Id is no longer in the catalog are skipped.
+            </summary>
+        </member>
         <member name="T:WinTuner.Core.Registry.FakeRegistryProvider">
             <summary>
             In-memory registry for unit tests. Mirrors the subset of semantics the
@@ -131,6 +160,19 @@
         </member>
         <member name="M:WinTuner.Core.Tweaks.TweakEngine.GetState(WinTuner.Core.Tweaks.RegistryTweak)">
             <summary>Reads the current state of the tweak relative to its enabled/disabled values.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Tweaks.TweakEngine.CaptureRaw(WinTuner.Core.Tweaks.RegistryTweak)">
+            <summary>
+            Reads the raw (value, kind) pair currently in the registry for a tweak. Used by
+            snapshot/backup so the exact pre-change state can be restored later (even after a reboot).
+            Returns Value = null and Kind = None when the value does not exist.
+            </summary>
+        </member>
+        <member name="M:WinTuner.Core.Tweaks.TweakEngine.WriteValue(WinTuner.Core.Tweaks.RegistryTweak,System.String,System.String)">
+            <summary>
+            Writes a previously captured raw value back to the registry. A null value deletes the
+            key (restoring the "value did not exist" state). Used by snapshot restore.
+            </summary>
         </member>
         <member name="M:WinTuner.Core.Tweaks.TweakEngine.ScanAll(System.Collections.Generic.IEnumerable{WinTuner.Core.Tweaks.RegistryTweak})">
             <summary>Reads the live state of every supplied tweak. Used by System Scan.</summary>

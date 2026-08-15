@@ -343,5 +343,37 @@ public static partial class Catalog
         AbsentState = TweakState.Disabled,
         Reference = "HKLM\\...\\SQMClient\\Windows!CEIPEnable (0 = off)",
         },
+        new()
+        {
+        Id = "privacy.disable-app-diagnostics",
+        Title = "Disable app diagnostic info access",
+        Description = "Blocks apps from accessing your diagnostic information (reliability, app errors) via the policy Windows Camera DisableTelemetryServices-style policy AppDiagnostics=2. The default (absent) lets apps read limited diagnostic data. Requires elevation; tightens what store apps can see about your system.",
+        Category = TweakCategory.Privacy,
+        Hive = RegistryHive.LocalMachine,
+        SubKey = @"SOFTWARE\Policies\Microsoft\Windows\AppPrivacy",
+        ValueName = "LetAppsGetDiagnosticInfo",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 2,
+        DisabledValue = 1,
+        DefaultValue = null,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKLM\\...\\AppPrivacy!LetAppsGetDiagnosticInfo (policy; 2 = never)",
+        },
+        new()
+        {
+        Id = "privacy.disable-tailored-ads",
+        Title = "Turn off personalized ads (silently signed-in)",
+        Description = "Disables the 'silent account' personalized-ad profile used by Microsoft for Store/consumer ads by setting Privacy SIPolicyMgr-based setting AdvertisingInfo SilentSignedIn=0. The default (1) allows personalized ads. Requires elevation; a privacy hardening step.",
+        Category = TweakCategory.Privacy,
+        Hive = RegistryHive.LocalMachine,
+        SubKey = @"SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo",
+        ValueName = "DisabledByGroupPolicy",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 1,
+        DisabledValue = 0,
+        DefaultValue = null,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKLM\\...\\AdvertisingInfo!DisabledByGroupPolicy (policy; 1 = off)",
+        },
     };
 }

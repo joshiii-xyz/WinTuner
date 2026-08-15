@@ -360,5 +360,37 @@ public static partial class Catalog
         AbsentState = TweakState.Disabled,
         Reference = "HKCU\\...\\Explorer\\Advanced!TaskbarGlomLevel (1 = when full)",
         },
+        new()
+        {
+        Id = "appearance.disable-jumplist-history",
+        Title = "Disable taskbar Jump List history",
+        Description = "Stops the taskbar/Start from building per-app Jump Lists of recent items (Advanced Start_TrackProgs=0). The default (1) tracks app usage for Jump Lists. A privacy tweak at the cost of quick-recent shortcuts.",
+        Category = TweakCategory.Appearance,
+        Hive = RegistryHive.CurrentUser,
+        SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+        ValueName = "Start_TrackProgs",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 0,
+        DisabledValue = 1,
+        DefaultValue = 1,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKCU\\...\\Explorer\\Advanced!Start_TrackProgs (0 = off)",
+        },
+        new()
+        {
+        Id = "appearance.use-light-taskbar-text",
+        Title = "Force light taskbar text (dark wallpaper)",
+        Description = "Forces the taskbar/Start to use light (white) text via the registry color override (Themes Personalize ColorPrevalence combined with a forced light setting), improving contrast on dark wallpapers. The default adapts automatically. A sign-out/in applies it.",
+        Category = TweakCategory.Appearance,
+        Hive = RegistryHive.CurrentUser,
+        SubKey = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
+        ValueName = "SystemUsesLightTheme",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 0,
+        DisabledValue = 1,
+        DefaultValue = 1,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKCU\\...\\Personalize!SystemUsesLightTheme (0 = light text)",
+        },
     };
 }

@@ -405,5 +405,37 @@ public static partial class Catalog
         AbsentState = TweakState.Disabled,
         Reference = "HKCU\\...\\Explorer\\Advanced!NavPaneShowAllFolders (1 = on)",
         },
+        new()
+        {
+        Id = "explorer.disable-recent-docs-history",
+        Title = "Clear recent docs on exit",
+        Description = "Forces Windows to clear the Recent Documents history when you sign out, by setting Policies Explorer ClearRecentDocsOnExit=1. The default (absent) keeps the history. A privacy convenience for shared machines so the next user doesn't see your files.",
+        Category = TweakCategory.Explorer,
+        Hive = RegistryHive.CurrentUser,
+        SubKey = @"Software\Microsoft\Windows\CurrentVersion\Policies\Explorer",
+        ValueName = "ClearRecentDocsOnExit",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 1,
+        DisabledValue = 0,
+        DefaultValue = null,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKCU\\...\\Policies\\Explorer!ClearRecentDocsOnExit (1 = on)",
+        },
+        new()
+        {
+        Id = "explorer.disable-new-app-prompt",
+        Title = "Disable 'new app installed' notification",
+        Description = "Stops Windows from popping the 'An app default was reset' / new-app-installed toast when a default-file-association app changes, by setting Explorer Advanced ShowNewAppSuggestedToast=0. The default (1) shows the suggestion. Reduces noise after updates.",
+        Category = TweakCategory.Explorer,
+        Hive = RegistryHive.CurrentUser,
+        SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+        ValueName = "ShowNewAppSuggestedToast",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 0,
+        DisabledValue = 1,
+        DefaultValue = 1,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKCU\\...\\Explorer\\Advanced!ShowNewAppSuggestedToast (0 = off)",
+        },
     };
 }

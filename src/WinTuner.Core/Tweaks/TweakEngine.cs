@@ -91,6 +91,18 @@ public sealed class TweakEngine
         return TweakState.Unknown;
     }
 
+    /// <summary>Reads the live state of every supplied tweak. Used by System Scan.</summary>
+    public IReadOnlyDictionary<string, TweakState> ScanAll(IEnumerable<RegistryTweak> tweaks)
+    {
+        var result = new Dictionary<string, TweakState>();
+        foreach (var tweak in tweaks)
+        {
+            result[tweak.Id] = GetState(tweak);
+        }
+
+        return result;
+    }
+
     /// <summary>
     /// Applies or reverts a tweak based on a desired state string ("Enabled"/"Disabled").
     /// Used by profile import so a captured configuration can be replayed.

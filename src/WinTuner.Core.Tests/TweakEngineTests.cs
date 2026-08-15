@@ -28,6 +28,24 @@ public class TweakEngineTests
     };
 
     [Fact]
+    public void ScanAll_ReportsState_ForEveryTweak()
+    {
+        var fake = new FakeRegistryProvider();
+        var engine = new TweakEngine(fake);
+        var a = Sample();
+        var b = Sample() with { Id = "test.other", ValueName = "Other" };
+
+        // Pre-set b to enabled, leave a at its absent (disabled) default.
+        fake.SetValue(RegistryHive.CurrentUser, TestSubKey, "Other", 1, RegistryValueKind.DWord);
+
+        var states = engine.ScanAll(new[] { a, b });
+
+        Assert.Equal(2, states.Count);
+        Assert.Equal(TweakState.Disabled, states[a.Id]);
+        Assert.Equal(TweakState.Enabled, states[b.Id]);
+    }
+
+    [Fact]
     public void Apply_WritesEnabledValue_AndReportsEnabled()
     {
         var fake = new FakeRegistryProvider();

@@ -29,6 +29,9 @@ public sealed partial class MainWindow : Window
     private readonly TweakEngine _engine = new(new RealRegistryProvider());
     private readonly Dictionary<TweakCategory, IReadOnlyList<TweakViewModel>> _byCategory = new();
     private TweakCategory _currentCategory;
+    private const string ScanViewTag = "Scan";
+    private object? _categoryView;
+    private bool _onScanView;
 
     public MainWindow()
     {
@@ -66,6 +69,15 @@ public sealed partial class MainWindow : Window
             });
         }
 
+        // A dedicated System Scan entry (not a tweak category) that reports the
+        // live state of every tweak across the whole catalog at once.
+        NavView.MenuItems.Add(new NavigationViewItem
+        {
+            Content = "System Scan",
+            Icon = new FontIcon { Glyph = "\uE71E" }, // Scan
+            Tag = ScanViewTag,
+        });
+
         if (_byCategory.Count > 0)
         {
             var first = _byCategory.Keys.First();
@@ -83,18 +95,40 @@ public sealed partial class MainWindow : Window
     private void ShowCategory(TweakCategory cat)
     {
         _currentCategory = cat;
+        _onScanView = false;
         CategoryTitle.Text = CategoryLabel(cat);
+        SubtitleText.Text = "Toggle to apply or revert. Every change writes a citable registry value you can reset anytime.";
+        ApplyAllButton.Visibility = Visibility.Visible;
+        ResetAllButton.Visibility = Visibility.Visible;
+        RefreshButton.Visibility = Visibility.Collapsed;
+        AdminBanner.Visibility = Visibility.Visible;
+
+        // Restore the default category view (captured once from the XAML tree).
+        if (_categoryView is null)
+        {
+            _categoryView = ContentArea.Content;
+        }
+        ContentArea.Content = _categoryView;
         TweakList.ItemsSource = _byCategory[cat];
     }
 
     private void OnNavSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        if (args.SelectedItem is not NavigationViewItem item || item.Tag is not TweakCategory cat)
+        if (args.SelectedItem is not NavigationViewItem item)
         {
             return;
         }
 
-        ShowCategory(cat);
+        if (item.Tag as string == ScanViewTag)
+        {
+            ShowScan();
+            return;
+        }
+
+        if (item.Tag is TweakCategory cat)
+        {
+            ShowCategory(cat);
+        }
     }
 
     private void OnToggle(object sender, RoutedEventArgs e)
@@ -172,6 +206,187 @@ public sealed partial class MainWindow : Window
                 ? $"Applied all {ok} tweaks in {CategoryLabel(_currentCategory)}."
                 : $"Applied {ok}, skipped {fail} (needs administrator) in {CategoryLabel(_currentCategory)}.",
             fail == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning);
+    }
+
+    private void ShowScan()
+    {
+        _onScanView = true;
+        CategoryTitle.Text = "System Scan";
+        SubtitleText.Text = "Live state of every tweak, read directly from your registry. Apply or revert any item inline.";
+        ApplyAllButton.Visibility = Visibility.Collapsed;
+        ResetAllButton.Visibility = Visibility.Collapsed;
+        RefreshButton.Visibility = Visibility.Visible;
+        AdminBanner.Visibility = Visibility.Collapsed;
+
+        ShowScanImpl();
+    }
+
+    private void ShowScanImpl()
+    {
+        var rows = Catalog.All
+            .Select(t => new ScanRowViewModel(t, _engine))
+            .OrderBy(r => r.CategoryLabel)
+            .ThenBy(r => r.Title)
+            .ToList();
+
+        int enabled = rows.Count(r => r.State == TweakState.Enabled);
+        int disabled = rows.Count(r => r.State == TweakState.Disabled);
+        int unknown = rows.Count(r => r.State == TweakState.Unknown);
+
+        var summary = new TextBlock
+        {
+            Text = $"{Catalog.All.Count} tweaks scanned · {enabled} enabled · {disabled} disabled · {unknown} not at a known setting",
+            FontSize = 15,
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+            Margin = new Thickness(0, 0, 0, 14),
+            TextWrapping = TextWrapping.Wrap,
+        };
+
+        var panel = new StackPanel { Spacing = 10 };
+        panel.Children.Add(summary);
+        foreach (var row in rows)
+        {
+            panel.Children.Add(BuildScanRow(row));
+        }
+
+        var scroll = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+        scroll.Content = panel;
+        ContentArea.Content = scroll;
+    }
+
+    private UIElement BuildScanRow(ScanRowViewModel row)
+    {
+        var border = new Border
+        {
+            Background = (Brush)Application.Current.Resources["CardBackgroundFillColorDefaultBrush"],
+            BorderBrush = (Brush)Application.Current.Resources["CardStrokeColorDefaultBrush"],
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(10),
+            Padding = new Thickness(18),
+        };
+
+        var grid = new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                new ColumnDefinition { Width = new GridLength(0, GridUnitType.Auto) },
+                new ColumnDefinition { Width = new GridLength(0, GridUnitType.Auto) },
+            },
+            RowDefinitions =
+            {
+                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+            },
+        };
+
+        var title = new TextBlock
+        {
+            Text = row.Title,
+            FontSize = 18,
+            FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+
+        var stateChip = new TextBlock
+        {
+            Text = row.StateText,
+            FontSize = 12,
+            Opacity = 0.75,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(0, 6, 0, 8),
+        };
+
+        var toggle = new ToggleSwitch
+        {
+            IsOn = row.IsOn,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+        toggle.Toggled += (sender, _) =>
+        {
+            if (sender is not ToggleSwitch t)
+            {
+                return;
+            }
+
+            try
+            {
+                if (t.IsOn)
+                {
+                    row.Apply();
+                }
+                else
+                {
+                    row.Revert();
+                }
+
+                row.Refresh();
+                t.IsOn = row.IsOn;
+                ShowStatus($"{(t.IsOn ? "Applied" : "Reverted")}: {row.Title}", InfoBarSeverity.Success);
+                // Refresh the per-row state chip without rebuilding the whole list.
+                stateChip.Text = row.StateText;
+            }
+            catch (Exception ex)
+            {
+                row.Refresh();
+                t.IsOn = row.IsOn;
+                ShowStatus($"Could not apply '{row.Title}': {Friendly(ex)}", InfoBarSeverity.Error);
+            }
+        };
+
+        var detail = new TextBlock
+        {
+            Text = $"{row.CategoryLabel} · {row.Reference}",
+            FontFamily = new FontFamily("Consolas"),
+            FontSize = 12,
+            Opacity = 0.7,
+            TextWrapping = TextWrapping.Wrap,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+
+        grid.Children.Add(title);
+        Grid.SetRow(title, 0);
+        Grid.SetColumn(title, 0);
+        Grid.SetColumnSpan(title, 2);
+
+        grid.Children.Add(toggle);
+        Grid.SetRow(toggle, 0);
+        Grid.SetColumn(toggle, 2);
+
+        grid.Children.Add(stateChip);
+        Grid.SetRow(stateChip, 1);
+        Grid.SetColumn(stateChip, 0);
+        Grid.SetColumnSpan(stateChip, 2);
+
+        grid.Children.Add(detail);
+        Grid.SetRow(detail, 2);
+        Grid.SetColumn(detail, 0);
+        Grid.SetColumnSpan(detail, 2);
+
+        border.Child = grid;
+        return border;
+    }
+
+    private void OnRefresh(object sender, RoutedEventArgs e)
+    {
+        if (!_onScanView)
+        {
+            return;
+        }
+
+        // Re-sync category cards if the user is on a category...
+        foreach (var list in _byCategory.Values)
+        {
+            foreach (var vm in list)
+            {
+                vm.Refresh();
+            }
+        }
+
+        // ...and rebuild the scan list from the live registry.
+        ShowScanImpl();
+        ShowStatus("Scanned your system registry for all tweaks.", InfoBarSeverity.Informational);
     }
 
     private void OnResetAll(object sender, RoutedEventArgs e)

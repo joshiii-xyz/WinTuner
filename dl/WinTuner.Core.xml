@@ -39,6 +39,9 @@
         <member name="M:WinTuner.Core.Registry.IRegistryProvider.GetValue(Microsoft.Win32.RegistryHive,System.String,System.String)">
             <summary>Reads a value. Returns null if the key or value does not exist.</summary>
         </member>
+        <member name="M:WinTuner.Core.Registry.IRegistryProvider.GetValueKind(Microsoft.Win32.RegistryHive,System.String,System.String)">
+            <summary>Reads the value kind of an existing value, or null if it does not exist.</summary>
+        </member>
         <member name="M:WinTuner.Core.Registry.IRegistryProvider.SetValue(Microsoft.Win32.RegistryHive,System.String,System.String,System.Object,Microsoft.Win32.RegistryValueKind)">
             <summary>Writes a value, creating the key path if necessary.</summary>
         </member>
@@ -94,6 +97,9 @@
         <member name="P:WinTuner.Core.Tweaks.RegistryTweak.RequiresElevation">
             <summary>True if applying requires writing to HKLM and therefore elevation.</summary>
         </member>
+        <member name="P:WinTuner.Core.Tweaks.RegistryTweak.RequiresReboot">
+            <summary>True if the change only takes full effect after a reboot. Surfaced as a UI badge.</summary>
+        </member>
         <member name="P:WinTuner.Core.Tweaks.RegistryTweak.Reference">
             <summary>Short, citable note on where this setting lives (for transparency).</summary>
         </member>
@@ -101,16 +107,24 @@
             <summary>Top-level grouping for tweaks shown in the navigation rail.</summary>
         </member>
         <member name="T:WinTuner.Core.Tweaks.TweakEngine">
-            <summary>
-            Interprets <see cref="T:WinTuner.Core.Tweaks.RegistryTweak"/> records against an <see cref="T:WinTuner.Core.Registry.IRegistryProvider"/>.
-            All operations are synchronous against the registry; the engine carries no UI state.
-            </summary>
+             <summary>
+             Interprets <see cref="T:WinTuner.Core.Tweaks.RegistryTweak"/> records against an <see cref="T:WinTuner.Core.Registry.IRegistryProvider"/>.
+             All operations are synchronous against the registry; the engine carries no UI state.
+            
+             Safety model: the first time a tweak is applied, the engine snapshots the value
+             it is about to overwrite (the "original") into memory. Reverting then restores that
+             real original rather than blindly writing the tweak's hardcoded opposite - so a tweak
+             applied over a non-default starting state can still be undone cleanly. The snapshot is
+             session-scoped: it is intentionally lost on restart, which is safe because after a reboot
+             the live registry already holds the applied (enabled) value and Revert writes the disabled
+             value as designed.
+             </summary>
         </member>
         <member name="M:WinTuner.Core.Tweaks.TweakEngine.Apply(WinTuner.Core.Tweaks.RegistryTweak)">
-            <summary>Applies (enables) the tweak.</summary>
+            <summary>Applies (enables) the tweak, backing up the pre-existing value first.</summary>
         </member>
         <member name="M:WinTuner.Core.Tweaks.TweakEngine.Revert(WinTuner.Core.Tweaks.RegistryTweak)">
-            <summary>Reverts (disables) the tweak.</summary>
+            <summary>Reverts (disables) the tweak, restoring the backed-up original when present.</summary>
         </member>
         <member name="M:WinTuner.Core.Tweaks.TweakEngine.Reset(WinTuner.Core.Tweaks.RegistryTweak)">
             <summary>Resets the value to the OS default. If DefaultValue is null, the value is deleted.</summary>
@@ -122,6 +136,13 @@
             <summary>
             Applies or reverts a tweak based on a desired state string ("Enabled"/"Disabled").
             Used by profile import so a captured configuration can be replayed.
+            </summary>
+        </member>
+        <member name="M:WinTuner.Core.Tweaks.TweakEngine.Backup(WinTuner.Core.Tweaks.RegistryTweak)">
+            <summary>
+            Captures the value currently in the registry (and its kind) before we modify it,
+            but only once per session and only when the value actually differs from the
+            enabled value (so we never record the already-applied value as the "original").
             </summary>
         </member>
         <member name="T:WinTuner.Core.Tweaks.TweakState">

@@ -42,6 +42,9 @@ public sealed record RegistryTweak
     /// <summary>True if applying requires writing to HKLM and therefore elevation.</summary>
     public bool RequiresElevation => Hive is RegistryHive.LocalMachine;
 
+    /// <summary>True if the change only takes full effect after a reboot. Surfaced as a UI badge.</summary>
+    public bool RequiresReboot { get; init; }
+
     /// <summary>Short, citable note on where this setting lives (for transparency).</summary>
     public string? Reference { get; init; }
 }

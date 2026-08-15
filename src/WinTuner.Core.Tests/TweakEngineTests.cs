@@ -233,4 +233,46 @@ public class TweakEngineTests
             Assert.Contains(expected, t.Reference, StringComparison.Ordinal);
         }
     }
+
+    [Fact]
+    public void Revert_RestoresOriginalValue_WhenStartingNonDefault()
+    {
+        // A tweak whose "disabled" value is 0, but the registry starts at a
+        // non-standard value (7). Reverting must restore 7, not blindly 0.
+        var fake = new FakeRegistryProvider();
+        fake.SetValue(RegistryHive.CurrentUser, TestSubKey, "Flag", 7, RegistryValueKind.DWord);
+        var engine = new TweakEngine(fake);
+        var tweak = Sample(); // EnabledValue=1, DisabledValue=0
+
+        engine.Apply(tweak);
+        Assert.Equal(1, fake.GetValue(RegistryHive.CurrentUser, TestSubKey, "Flag"));
+
+        engine.Revert(tweak);
+        Assert.Equal(7, fake.GetValue(RegistryHive.CurrentUser, TestSubKey, "Flag"));
+    }
+
+    [Fact]
+    public void Reset_RestoresOriginal_WhenBackupExists()
+    {
+        var fake = new FakeRegistryProvider();
+        fake.SetValue(RegistryHive.CurrentUser, TestSubKey, "Flag", 42, RegistryValueKind.DWord);
+        var engine = new TweakEngine(fake);
+        var tweak = Sample() with { DefaultValue = 0 };
+
+        engine.Apply(tweak);
+        engine.Reset(tweak);
+
+        Assert.Equal(42, fake.GetValue(RegistryHive.CurrentUser, TestSubKey, "Flag"));
+    }
+
+    [Fact]
+    public void Revert_UsesDisabledValue_WhenNoOriginal()
+    {
+        var fake = new FakeRegistryProvider();
+        var engine = new TweakEngine(fake);
+        var tweak = Sample(); // DisabledValue = 0
+
+        engine.Revert(tweak);
+        Assert.Equal(0, fake.GetValue(RegistryHive.CurrentUser, TestSubKey, "Flag"));
+    }
 }

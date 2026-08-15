@@ -153,6 +153,10 @@
                                                        Foreground="{ThemeResource SystemFillColorCriticalBrush}"
                                                        Visibility="{x:Bind ElevationVisibility}"
                                                        VerticalAlignment="Center" />
+                                            <TextBlock Text="Restart required"
+                                                       Foreground="{ThemeResource SystemFillColorCautionBrush}"
+                                                       Visibility="{x:Bind RebootVisibility}"
+                                                       VerticalAlignment="Center" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>

@@ -14,6 +14,25 @@ public sealed class RealRegistryProvider : IRegistryProvider
         return key?.GetValue(valueName);
     }
 
+    public RegistryValueKind? GetValueKind(RegistryHive hive, string subKey, string valueName)
+    {
+        using var key = RegistryKey.OpenBaseKey(hive, RegistryView.Default).OpenSubKey(subKey);
+        if (key is null)
+        {
+            return null;
+        }
+
+        try
+        {
+            return key.GetValueKind(valueName);
+        }
+        catch (ArgumentException)
+        {
+            // Value does not exist.
+            return null;
+        }
+    }
+
     public void SetValue(RegistryHive hive, string subKey, string valueName, object value, RegistryValueKind kind)
     {
         using var baseKey = RegistryKey.OpenBaseKey(hive, RegistryView.Default);

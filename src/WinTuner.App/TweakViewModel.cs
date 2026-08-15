@@ -29,6 +29,7 @@ public sealed class TweakViewModel : INotifyPropertyChanged
     public string Description => Tweak.Description;
     public string Reference => Tweak.Reference ?? string.Empty;
     public bool RequiresElevation => Tweak.RequiresElevation;
+    public bool RequiresReboot => Tweak.RequiresReboot;
 
     public bool IsOn
     {
@@ -58,6 +59,9 @@ public sealed class TweakViewModel : INotifyPropertyChanged
 
     public Visibility ElevationVisibility =>
         RequiresElevation ? Visibility.Visible : Visibility.Collapsed;
+
+    public Visibility RebootVisibility =>
+        RequiresReboot ? Visibility.Visible : Visibility.Collapsed;
 
     public void Refresh()
     {

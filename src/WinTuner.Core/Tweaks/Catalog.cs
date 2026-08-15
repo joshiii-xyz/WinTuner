@@ -377,6 +377,7 @@ public static class Catalog
             DisabledValue = 2,
             DefaultValue = null,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKLM\\...\\Services\\SysMain!Start (4 = disabled)",
         },
         new()
@@ -395,6 +396,7 @@ public static class Catalog
             DisabledValue = 1,
             DefaultValue = 1,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKLM\\...\\Control\\Power!HibernateEnabled (0 = off)",
         },
         new()
@@ -667,6 +669,7 @@ public static class Catalog
             DisabledValue = 0,
             DefaultValue = 0,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKLM\\...\\Memory Management!ClearPageFileAtShutdown (1 = wipe)",
         },
         new()
@@ -685,6 +688,7 @@ public static class Catalog
             DisabledValue = 2,
             DefaultValue = null,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKLM\\...\\Services\\RemoteRegistry!Start (4 = disabled)",
         },
         new()
@@ -703,6 +707,7 @@ public static class Catalog
             DisabledValue = 2,
             DefaultValue = null,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKLM\\...\\Services\\upnphost!Start (4 = disabled)",
         },
 
@@ -723,6 +728,7 @@ public static class Catalog
             DisabledValue = 0,
             DefaultValue = 0,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKLM\\...\\Tcpip6\\Parameters!DisabledComponents (0xFF = off)",
         },
         new()
@@ -794,6 +800,7 @@ public static class Catalog
             DisabledValue = 1,
             DefaultValue = 1,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKLM\\...\\LanmanServer\\Parameters!SMB1 (0 = disabled)",
         },
 
@@ -832,6 +839,7 @@ public static class Catalog
             DisabledValue = 1,
             DefaultValue = 1,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKLM\\...\\GraphicsDrivers!HwSchMode (2 = on, 1 = off)",
         },
         new()
@@ -1054,6 +1062,7 @@ public static class Catalog
             DisabledValue = 2,
             DefaultValue = null,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKLM\\...\\Services\\Ndu!Start (4 = disabled)",
         },
         new()
@@ -1276,6 +1285,7 @@ public static class Catalog
             DisabledValue = 2,
             DefaultValue = 2,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKLM\\...\\Memory Management!NoExecute (3 = Always On)",
         },
         new()
@@ -1332,6 +1342,7 @@ public static class Catalog
             DisabledValue = 10,
             DefaultValue = 10,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKLM\\...\\SystemProfile!NetworkThrottlingIndex (0xFFFFFFFF = off)",
         },
         new()
@@ -1371,6 +1382,7 @@ public static class Catalog
             DisabledValue = 0,
             DefaultValue = 0,
             AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
             Reference = "HKCU\\System\\GameConfigStore!GameDVR_FSEBehaviorMode (2 = forced off)",
         },
     };

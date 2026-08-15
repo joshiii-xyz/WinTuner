@@ -24,6 +24,16 @@ public sealed class FakeRegistryProvider : IRegistryProvider
         return null;
     }
 
+    public RegistryValueKind? GetValueKind(RegistryHive hive, string subKey, string valueName)
+    {
+        if (_store.TryGetValue(Key(hive, subKey), out var values) &&
+            values.TryGetValue(valueName, out var stored))
+        {
+            return stored.Kind;
+        }
+        return null;
+    }
+
     public void SetValue(RegistryHive hive, string subKey, string valueName, object value, RegistryValueKind kind)
     {
         var k = Key(hive, subKey);

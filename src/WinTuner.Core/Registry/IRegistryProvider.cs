@@ -11,6 +11,9 @@ public interface IRegistryProvider
     /// <summary>Reads a value. Returns null if the key or value does not exist.</summary>
     object? GetValue(RegistryHive hive, string subKey, string valueName);
 
+    /// <summary>Reads the value kind of an existing value, or null if it does not exist.</summary>
+    RegistryValueKind? GetValueKind(RegistryHive hive, string subKey, string valueName);
+
     /// <summary>Writes a value, creating the key path if necessary.</summary>
     void SetValue(RegistryHive hive, string subKey, string valueName, object value, RegistryValueKind kind);
 

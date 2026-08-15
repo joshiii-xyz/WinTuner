@@ -587,6 +587,95 @@ public sealed partial class MainWindow : Window
                 ? $"Imported profile: {applied} tweaks set."
                 : $"Imported profile: {applied} set, {failed} skipped (needs administrator).",
             failed == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning);
+    private async void OnSnapshot(object sender, RoutedEventArgs e)
+    {
+        var picker = new FileSavePicker
+        {
+            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            SuggestedFileName = $"wintuner-snapshot-{DateTime.Now:yyyyMMdd-HHmm}",
+        };
+        picker.FileTypeChoices.Add("WinTuner snapshot", new[] { ".json" });
+
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+        var file = await picker.PickSaveFileAsync();
+        if (file is null)
+        {
+            return;
+        }
+
+        // Capture the RAW registry state of every known tweak - including values
+        // that do not exist yet - so they can be restored exactly later, even after
+        // a reboot (unlike the in-memory session backup).
+        var json = WinTuner.Core.Profile.SnapshotService.Export(Catalog.All, _engine);
+        await File.WriteAllTextAsync(file.Path, json);
+        ShowStatus($"Snapshot of {Catalog.All.Count} tweak states saved to {file.Name}.", InfoBarSeverity.Success);
+    }
+
+    private async void OnRestoreSnapshot(object sender, RoutedEventArgs e)
+    {
+        var picker = new FileOpenPicker
+        {
+            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+        };
+        picker.FileTypeFilter.Add(".json");
+
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+        var file = await picker.PickSingleFileAsync();
+        if (file is null)
+        {
+            return;
+        }
+
+        string json;
+        try
+        {
+            json = await File.ReadAllTextAsync(file.Path);
+        }
+        catch (Exception ex)
+        {
+            ShowStatus($"Could not read snapshot: {ex.Message}", InfoBarSeverity.Error);
+            return;
+        }
+
+        var snapshot = WinTuner.Core.Profile.SnapshotService.Parse(json);
+        if (snapshot is null)
+        {
+            ShowStatus("That file is not a valid WinTuner snapshot.", InfoBarSeverity.Error);
+            return;
+        }
+
+        int restored = 0, failed = 0;
+        try
+        {
+            // Restore under an admin context if any key is HKLM; failures are caught below.
+            WinTuner.Core.Profile.SnapshotService.Restore(Catalog.All, snapshot, _engine);
+            restored = snapshot.Count;
+        }
+        catch (Exception ex)
+        {
+            failed++;
+            ShowStatus($"Snapshot restore failed: {Friendly(ex)}", InfoBarSeverity.Error);
+            return;
+        }
+
+        // Re-sync every card from the registry so the UI reflects the restored state.
+        foreach (var list in _byCategory.Values)
+        {
+            foreach (var vm in list)
+            {
+                vm.Refresh();
+            }
+        }
+
+        ShowStatus(
+            failed == 0
+                ? $"Restored {restored} tweaks to the snapshot state."
+                : $"Restored {restored} tweaks, {failed} failed (needs administrator).",
+            failed == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning);
     }
 
     private static string Friendly(Exception ex)

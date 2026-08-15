@@ -40,6 +40,22 @@
                             <TextBlock Text="Export profile" />
                         </StackPanel>
                     </Button>
+                    <Button x:Name="SnapshotButton"
+                            Click="OnSnapshot"
+                            HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE777;" />
+                            <TextBlock Text="Snapshot" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="RestoreButton"
+                            Click="OnRestoreSnapshot"
+                            HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE777;" />
+                            <TextBlock Text="Restore snapshot" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </NavigationView.PaneFooter>
 

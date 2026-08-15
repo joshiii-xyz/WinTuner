@@ -13,14 +13,6 @@
                         PaneTitle="WinTuner"
                         SelectionChanged="OnNavSelectionChanged">
 
-            <NavigationView.PaneFooter>
-                <TextBlock Margin="16,10"
-                           FontSize="11"
-                           Opacity="0.6"
-                           TextWrapping="Wrap"
-                           Text="Registry-backed • reversible" />
-            </NavigationView.PaneFooter>
-
             <Grid Padding="28,18,28,26">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

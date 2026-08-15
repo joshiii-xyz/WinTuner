@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.UI.Windowing;
@@ -84,17 +85,29 @@ public sealed partial class MainWindow : Window
             return;
         }
 
-        if (toggle.IsOn)
+        bool desired = toggle.IsOn;
+        try
         {
-            vm.Apply();
-        }
-        else
-        {
-            vm.Revert();
-        }
+            if (desired)
+            {
+                vm.Apply();
+            }
+            else
+            {
+                vm.Revert();
+            }
 
-        vm.Refresh();
-        ShowStatus($"{(toggle.IsOn ? "Applied" : "Reverted")}: {vm.Title}", InfoBarSeverity.Success);
+            vm.Refresh();
+            ShowStatus($"{(desired ? "Applied" : "Reverted")}: {vm.Title}", InfoBarSeverity.Success);
+        }
+        catch (Exception ex)
+        {
+            // The registry write failed - commonly because the tweak writes to
+            // HKLM and the app is not elevated. Re-sync the toggle to the real
+            // state so the UI never lies about what is actually applied.
+            vm.Refresh();
+            ShowStatus($"Could not apply '{vm.Title}': {Friendly(ex)}", InfoBarSeverity.Error);
+        }
     }
 
     private void OnReset(object sender, RoutedEventArgs e)
@@ -104,9 +117,29 @@ public sealed partial class MainWindow : Window
             return;
         }
 
-        vm.Reset();
-        vm.Refresh();
-        ShowStatus($"Reset to default: {vm.Title}", InfoBarSeverity.Informational);
+        try
+        {
+            vm.Reset();
+            vm.Refresh();
+            ShowStatus($"Reset to default: {vm.Title}", InfoBarSeverity.Informational);
+        }
+        catch (Exception ex)
+        {
+            vm.Refresh();
+            ShowStatus($"Could not reset '{vm.Title}': {Friendly(ex)}", InfoBarSeverity.Error);
+        }
+    }
+
+    private static string Friendly(Exception ex)
+    {
+        string msg = ex.Message;
+        if (msg.Contains("denied", StringComparison.OrdinalIgnoreCase) ||
+            msg.Contains("Unauthorized", StringComparison.OrdinalIgnoreCase))
+        {
+            return "this writes to HKLM and requires administrator. Relaunch WinTuner as admin.";
+        }
+
+        return msg;
     }
 
     private void ShowStatus(string message, InfoBarSeverity severity)
@@ -133,10 +166,12 @@ public sealed partial class MainWindow : Window
     {
         TweakCategory.Explorer => "\uE8B7",     // Folder
         TweakCategory.Privacy => "\uE72E",      // Lock
-        TweakCategory.System => "\uE713",       // Settings (gear)
         TweakCategory.Performance => "\uE9D9",  // Performance
         TweakCategory.Appearance => "\uE790",   // Brush
+        TweakCategory.System => "\uE713",       // Settings (gear)
         TweakCategory.Security => "\uE7EF",     // Shield
-        _ => "\uE8C0",                          // Globe (Network / fallback)
+        TweakCategory.Network => "\uE8C0",      // Globe
+        TweakCategory.Gaming => "\uE99D",       // Xbox
+        _ => "\uE8C0",                          // Globe (fallback)
     };
 }

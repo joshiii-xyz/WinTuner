@@ -117,4 +117,24 @@ public class TweakEngineTests
             Assert.True(t.RequiresElevation, $"Tweak {t.Id} writes to HKLM but does not report RequiresElevation.");
         }
     }
+
+    [Fact]
+    public void Catalog_AllTweaks_HaveValidHiveAndKind()
+    {
+        foreach (var t in Catalog.All)
+        {
+            Assert.True(Enum.IsDefined(typeof(RegistryHive), t.Hive), $"Tweak {t.Id} has an invalid hive.");
+            Assert.True(Enum.IsDefined(typeof(RegistryValueKind), t.ValueKind), $"Tweak {t.Id} has an invalid value kind.");
+        }
+    }
+
+    [Fact]
+    public void Catalog_AllTweaks_HaveNonNullKeyAndValueName()
+    {
+        foreach (var t in Catalog.All)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(t.SubKey), $"Tweak {t.Id} is missing SubKey.");
+            Assert.False(string.IsNullOrWhiteSpace(t.ValueName), $"Tweak {t.Id} is missing ValueName.");
+        }
+    }
 }

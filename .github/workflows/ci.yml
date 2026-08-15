@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore WinTuner.sln
+
+      - name: Build (x64, Release)
+        run: dotnet build WinTuner.sln -c Release -p:Platform=x64 --no-restore
+
+      - name: Test
+        run: dotnet test WinTuner.sln -c Release -p:Platform=x64 --no-build --verbosity normal
+
+      - name: Upload app artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WinTuner-app-x64
+          path: src/WinTuner.App/bin/Release/net8.0-windows10.0.26100.0/x64/WinTuner*
+          if-no-files-found: warn

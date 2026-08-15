@@ -4,55 +4,55 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WinTuner.App">
 
+    <Window.Resources>
+        <!-- Flat, left-aligned action button that mirrors the NavigationView rail style. -->
+        <Style x:Key="FlatNavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Padding" Value="12,11" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <NavigationView x:Name="NavView"
                         PaneDisplayMode="Left"
                         IsBackButtonVisible="Collapsed"
                         IsSettingsVisible="False"
-                        OpenPaneLength="240"
+                        OpenPaneLength="248"
                         PaneTitle="WinTuner"
                         SelectionChanged="OnNavSelectionChanged">
 
             <NavigationView.PaneFooter>
-                <StackPanel Padding="12,8" Spacing="8">
-                    <Button x:Name="AdminButton"
-                            Click="OnRelaunchAdmin"
-                            HorizontalAlignment="Stretch"
-                            Visibility="Collapsed">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon Glyph="&#xE7EF;" />
-                            <TextBlock Text="Restart as administrator" />
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="ImportButton"
-                            Click="OnImport"
-                            HorizontalAlignment="Stretch">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon Glyph="&#xE8B6;" />
+                <StackPanel Padding="12,10" Spacing="2">
+                    <Border Height="1"
+                            Background="{ThemeResource DividerStrokeColorDefaultBrush}"
+                            Margin="8,2,8,8" />
+                    <Button x:Name="ImportButton" Style="{StaticResource FlatNavButton}" Click="OnImport">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <FontIcon Glyph="&#xE8B5;" FontSize="16" />
                             <TextBlock Text="Import profile" />
                         </StackPanel>
                     </Button>
-                    <Button x:Name="ExportButton"
-                            Click="OnExport"
-                            HorizontalAlignment="Stretch">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon Glyph="&#xE74E;" />
+                    <Button x:Name="ExportButton" Style="{StaticResource FlatNavButton}" Click="OnExport">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <FontIcon Glyph="&#xEDE1;" FontSize="16" />
                             <TextBlock Text="Export profile" />
                         </StackPanel>
                     </Button>
-                    <Button x:Name="SnapshotButton"
-                            Click="OnSnapshot"
-                            HorizontalAlignment="Stretch">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon Glyph="&#xE777;" />
+                    <Button x:Name="SnapshotButton" Style="{StaticResource FlatNavButton}" Click="OnSnapshot">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <FontIcon Glyph="&#xE722;" FontSize="16" />
                             <TextBlock Text="Snapshot" />
                         </StackPanel>
                     </Button>
-                    <Button x:Name="RestoreButton"
-                            Click="OnRestoreSnapshot"
-                            HorizontalAlignment="Stretch">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon Glyph="&#xE777;" />
+                    <Button x:Name="RestoreButton" Style="{StaticResource FlatNavButton}" Click="OnRestoreSnapshot">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <FontIcon Glyph="&#xE777;" FontSize="16" />
                             <TextBlock Text="Restore snapshot" />
                         </StackPanel>
                     </Button>
@@ -108,7 +108,7 @@
                             Click="OnResetAll"
                             Margin="0,0,8,0">
                         <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon Glyph="&#xE777;" />
+                            <FontIcon Glyph="&#xE72C;" />
                             <TextBlock Text="Reset all" />
                         </StackPanel>
                     </Button>
@@ -130,15 +130,15 @@
                                    TextChanged="OnSearchTextChanged" />
                 </Grid>
 
-                <InfoBar x:Name="AdminBanner"
+                <InfoBar x:Name="RestartBar"
                          Grid.Row="3"
                          Margin="0,0,0,14"
                          IsOpen="False"
                          Severity="Warning"
-                         Title="Some tweaks need administrator rights"
-                         Message="HKLM tweaks will fail until you relaunch as administrator.">
+                         Title="A restart is required"
+                         Message="Some tweaks you applied will not take full effect until you restart Windows.">
                     <InfoBar.ActionButton>
-                        <Button Content="Restart as administrator" Click="OnRelaunchAdmin" />
+                        <Button Content="Restart now" Click="OnRestartNow" Style="{StaticResource AccentButtonStyle}" />
                     </InfoBar.ActionButton>
                 </InfoBar>
 
@@ -204,5 +204,37 @@
                 </ContentControl>
             </Grid>
         </NavigationView>
+
+        <!-- Administrator elevation modal: blocks the app until it is relaunched elevated. -->
+        <Border x:Name="AdminOverlay"
+                Background="{ThemeResource SystemControlChromeHighAcrylicWindowMediumBrush}"
+                Visibility="Collapsed">
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="32"
+                    MaxWidth="420"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <StackPanel Spacing="16">
+                    <FontIcon Glyph="&#xE7EF;" FontSize="40" HorizontalAlignment="Center" />
+                    <TextBlock Text="Administrator privileges required"
+                               Style="{StaticResource TitleTextBlockStyle}"
+                               TextAlignment="Center" />
+                    <TextBlock Text="WinTuner writes to HKEY_LOCAL_MACHINE for many system tweaks. Relaunch WinTuner as administrator so every tweak can be applied and reverted."
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Opacity="0.8" />
+                    <Button Content="Restart as administrator"
+                            Click="OnRelaunchAdmin"
+                            Style="{StaticResource AccentButtonStyle}"
+                            HorizontalAlignment="Stretch" />
+                    <Button Content="Exit"
+                            Click="OnExit"
+                            HorizontalAlignment="Stretch" />
+                </StackPanel>
+            </Border>
+        </Border>
     </Grid>
 </Window>

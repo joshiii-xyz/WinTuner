@@ -36,6 +36,11 @@ public sealed partial class MainWindow : Window
     private TweakCategory _preSearchCategory;
     private bool _preSearchWasScan;
 
+    // Tweaks applied this session that need a reboot. We accumulate them so the
+    // user can apply a whole batch and restart once at the end, rather than being
+    // interrupted after every single reboot-gated tweak.
+    private readonly HashSet<string> _pendingReboot = new();
+
     public MainWindow()
     {
         this.InitializeComponent();
@@ -88,11 +93,11 @@ public sealed partial class MainWindow : Window
             NavView.SelectedItem = NavView.MenuItems.OfType<NavigationViewItem>().First();
         }
 
-        // Show the admin affordances only when elevation is actually required and
-        // we are not already running elevated.
+        // When HKLM tweaks exist and we are not elevated, block the app with a
+        // modal until the user relaunches as administrator (or exits). The rest of
+        // the window sits behind an acrylic overlay and is not interactive.
         bool needsAdmin = !ElevationHelper.IsElevated() && Catalog.All.Any(t => t.RequiresElevation);
-        AdminBanner.IsOpen = needsAdmin;
-        AdminButton.Visibility = needsAdmin ? Visibility.Visible : Visibility.Collapsed;
+        AdminOverlay.Visibility = needsAdmin ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void ShowCategory(TweakCategory cat)
@@ -105,7 +110,6 @@ public sealed partial class MainWindow : Window
         ApplyAllButton.Visibility = Visibility.Visible;
         ResetAllButton.Visibility = Visibility.Visible;
         RefreshButton.Visibility = Visibility.Collapsed;
-        AdminBanner.Visibility = Visibility.Visible;
 
         // Restore the default category view (captured once from the XAML tree).
         if (_categoryView is null)
@@ -156,6 +160,10 @@ public sealed partial class MainWindow : Window
 
             vm.Refresh();
             ShowStatus($"{(desired ? "Applied" : "Reverted")}: {vm.Title}", InfoBarSeverity.Success);
+
+            // Do NOT restart immediately. Reboot-gated tweaks are queued and a
+            // single "Restart now" bar appears so the user can batch everything.
+            TrackReboot(vm);
         }
         catch (Exception ex)
         {
@@ -164,8 +172,25 @@ public sealed partial class MainWindow : Window
             // state so the UI never lies about what is actually applied.
             vm.Refresh();
             ShowStatus($"Could not apply '{vm.Title}': {Friendly(ex)}", InfoBarSeverity.Error);
-            AdminBanner.IsOpen = true;
         }
+    }
+
+    /// <summary>
+    /// Notes that a tweak which needs a reboot was just applied. Shows the
+    /// persistent restart bar once any reboot-gated tweak is pending.
+    /// </summary>
+    private void TrackReboot(TweakViewModel vm)
+    {
+        if (vm.RequiresReboot && vm.IsOn)
+        {
+            _pendingReboot.Add(vm.Title);
+        }
+        else
+        {
+            _pendingReboot.Remove(vm.Title);
+        }
+
+        RestartBar.IsOpen = _pendingReboot.Count > 0;
     }
 
     private void OnReset(object sender, RoutedEventArgs e)
@@ -197,6 +222,7 @@ public sealed partial class MainWindow : Window
             {
                 vm.Apply();
                 vm.Refresh();
+                TrackReboot(vm);
                 ok++;
             }
             catch (Exception)
@@ -264,7 +290,6 @@ public sealed partial class MainWindow : Window
         ApplyAllButton.Visibility = Visibility.Collapsed;
         ResetAllButton.Visibility = Visibility.Collapsed;
         RefreshButton.Visibility = Visibility.Collapsed;
-        AdminBanner.Visibility = Visibility.Collapsed;
 
         if (matches.Count == 0)
         {
@@ -301,7 +326,6 @@ public sealed partial class MainWindow : Window
         ApplyAllButton.Visibility = Visibility.Collapsed;
         ResetAllButton.Visibility = Visibility.Collapsed;
         RefreshButton.Visibility = Visibility.Visible;
-        AdminBanner.Visibility = Visibility.Collapsed;
 
         ShowScanImpl();
     }
@@ -500,11 +524,34 @@ public sealed partial class MainWindow : Window
 
     private void OnRelaunchAdmin(object sender, RoutedEventArgs e) => ElevationHelper.RelaunchAsAdmin();
 
+    private void OnExit(object? sender, RoutedEventArgs e) => Application.Current.Exit();
+
+    private void OnRestartNow(object sender, RoutedEventArgs e)
+    {
+        // Clear the pending set (the user chose to restart now) and reboot Windows.
+        _pendingReboot.Clear();
+        RestartBar.IsOpen = false;
+
+        try
+        {
+            var psi = new System.Diagnostics.ProcessStartInfo("shutdown.exe", "/r /t 0")
+            {
+                CreateNoWindow = true,
+                UseShellExecute = true,
+            };
+            System.Diagnostics.Process.Start(psi);
+        }
+        catch (Exception ex)
+        {
+            ShowStatus($"Could not restart Windows: {ex.Message}", InfoBarSeverity.Error);
+        }
+    }
+
     private async void OnExport(object sender, RoutedEventArgs e)
     {
         var picker = new FileSavePicker
         {
-            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            SuggestedStartLocation = PickerLocationId.Desktop,
             SuggestedFileName = "wintuner-profile",
         };
         picker.FileTypeChoices.Add("WinTuner profile", new[] { ".json" });
@@ -528,7 +575,7 @@ public sealed partial class MainWindow : Window
     {
         var picker = new FileOpenPicker
         {
-            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            SuggestedStartLocation = PickerLocationId.Desktop,
         };
         picker.FileTypeFilter.Add(".json");
 
@@ -593,7 +640,7 @@ public sealed partial class MainWindow : Window
     {
         var picker = new FileSavePicker
         {
-            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            SuggestedStartLocation = PickerLocationId.Desktop,
             SuggestedFileName = $"wintuner-snapshot-{DateTime.Now:yyyyMMdd-HHmm}",
         };
         picker.FileTypeChoices.Add("WinTuner snapshot", new[] { ".json" });
@@ -619,7 +666,7 @@ public sealed partial class MainWindow : Window
     {
         var picker = new FileOpenPicker
         {
-            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            SuggestedStartLocation = PickerLocationId.Desktop,
         };
         picker.FileTypeFilter.Add(".json");
 

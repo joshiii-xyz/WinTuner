@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.Win32;
 using WinTuner.Core.Registry;
+using WinTuner.Core.Profile;
 using WinTuner.Core.Tweaks;
 using Xunit;
 
@@ -176,5 +177,49 @@ public class TweakEngineTests
             Assert.False(string.IsNullOrWhiteSpace(t.SubKey), $"Tweak {t.Id} is missing SubKey.");
             Assert.False(string.IsNullOrWhiteSpace(t.ValueName), $"Tweak {t.Id} is missing ValueName.");
         }
+    }
+
+    [Fact]
+    public void Profile_ExportThenApply_RoundTripsState()
+    {
+        var fake = new FakeRegistryProvider();
+        var engine = new TweakEngine(fake);
+        var sample = Sample();
+        var other = new RegistryTweak
+        {
+            Id = "test.other",
+            Title = "Other",
+            Description = "Second tweak used to verify profile import touches only recorded entries.",
+            Category = TweakCategory.Privacy,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = TestSubKey,
+            ValueName = "OtherFlag",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+        };
+
+        // Enable only the sample tweak, then export the live state.
+        engine.Apply(sample);
+        engine.Revert(other);
+        var json = ProfileService.Export(new[] { sample, other }, engine);
+
+        // Change both states on the fake store, then replay the profile.
+        engine.Revert(sample);
+        engine.Apply(other);
+        var states = ProfileService.Parse(json);
+        ProfileService.Apply(new[] { sample, other }, states, engine);
+
+        Assert.Equal(TweakState.Enabled, engine.GetState(sample));
+        Assert.Equal(TweakState.Disabled, engine.GetState(other));
+    }
+
+    [Fact]
+    public void Profile_Parse_ReturnsEmpty_OnInvalidJson()
+    {
+        var states = ProfileService.Parse("this is not json");
+        Assert.Empty(states);
     }
 }

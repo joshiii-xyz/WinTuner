@@ -59,6 +59,27 @@ public sealed class TweakEngine
         return TweakState.Unknown;
     }
 
+    /// <summary>
+    /// Applies or reverts a tweak based on a desired state string ("Enabled"/"Disabled").
+    /// Used by profile import so a captured configuration can be replayed.
+    /// </summary>
+    public void ApplyOrRevert(RegistryTweak tweak, IReadOnlyDictionary<string, string> states)
+    {
+        if (!states.TryGetValue(tweak.Id, out var state))
+        {
+            return;
+        }
+
+        if (state == nameof(TweakState.Enabled))
+        {
+            Apply(tweak);
+        }
+        else
+        {
+            Revert(tweak);
+        }
+    }
+
     private static bool ValuesEqual(object? a, object? b)
     {
         if (ReferenceEquals(a, b))

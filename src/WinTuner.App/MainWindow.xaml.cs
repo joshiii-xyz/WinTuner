@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Windows.Graphics;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using WinTuner.App.Profile;
 using WinTuner.Core.Registry;
 using WinTuner.Core.Tweaks;
 
@@ -15,12 +20,15 @@ namespace WinTuner.App;
 /// The main window. Presents the tweak catalog through a WinUI 3 NavigationView
 /// (left rail, Fluent icons) with each tweak rendered as a card: a ToggleSwitch to
 /// apply/revert, a live state read-out, the citable registry reference, and a
-/// Reset-to-default action. Status is surfaced via an InfoBar.
+/// Reset-to-default action. Category-wide Apply all / Reset all, an admin
+/// relaunch affordance for HKLM tweaks, and profile Export/Import are provided.
+/// Status is surfaced via an InfoBar.
 /// </summary>
 public sealed partial class MainWindow : Window
 {
     private readonly TweakEngine _engine = new(new RealRegistryProvider());
     private readonly Dictionary<TweakCategory, IReadOnlyList<TweakViewModel>> _byCategory = new();
+    private TweakCategory _currentCategory;
 
     public MainWindow()
     {
@@ -61,10 +69,22 @@ public sealed partial class MainWindow : Window
         if (_byCategory.Count > 0)
         {
             var first = _byCategory.Keys.First();
-            CategoryTitle.Text = CategoryLabel(first);
-            TweakList.ItemsSource = _byCategory[first];
+            ShowCategory(first);
             NavView.SelectedItem = NavView.MenuItems.OfType<NavigationViewItem>().First();
         }
+
+        // Show the admin affordances only when elevation is actually required and
+        // we are not already running elevated.
+        bool needsAdmin = !ElevationHelper.IsElevated() && Catalog.All.Any(t => t.RequiresElevation);
+        AdminBanner.IsOpen = needsAdmin;
+        AdminButton.Visibility = needsAdmin ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private void ShowCategory(TweakCategory cat)
+    {
+        _currentCategory = cat;
+        CategoryTitle.Text = CategoryLabel(cat);
+        TweakList.ItemsSource = _byCategory[cat];
     }
 
     private void OnNavSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -74,8 +94,7 @@ public sealed partial class MainWindow : Window
             return;
         }
 
-        CategoryTitle.Text = CategoryLabel(cat);
-        TweakList.ItemsSource = _byCategory[cat];
+        ShowCategory(cat);
     }
 
     private void OnToggle(object sender, RoutedEventArgs e)
@@ -107,6 +126,7 @@ public sealed partial class MainWindow : Window
             // state so the UI never lies about what is actually applied.
             vm.Refresh();
             ShowStatus($"Could not apply '{vm.Title}': {Friendly(ex)}", InfoBarSeverity.Error);
+            AdminBanner.IsOpen = true;
         }
     }
 
@@ -128,6 +148,145 @@ public sealed partial class MainWindow : Window
             vm.Refresh();
             ShowStatus($"Could not reset '{vm.Title}': {Friendly(ex)}", InfoBarSeverity.Error);
         }
+    }
+
+    private void OnApplyAll(object sender, RoutedEventArgs e)
+    {
+        int ok = 0, fail = 0;
+        foreach (var vm in _byCategory[_currentCategory])
+        {
+            try
+            {
+                vm.Apply();
+                vm.Refresh();
+                ok++;
+            }
+            catch (Exception)
+            {
+                fail++;
+            }
+        }
+
+        ShowStatus(
+            fail == 0
+                ? $"Applied all {ok} tweaks in {CategoryLabel(_currentCategory)}."
+                : $"Applied {ok}, skipped {fail} (needs administrator) in {CategoryLabel(_currentCategory)}.",
+            fail == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning);
+    }
+
+    private void OnResetAll(object sender, RoutedEventArgs e)
+    {
+        int ok = 0, fail = 0;
+        foreach (var vm in _byCategory[_currentCategory])
+        {
+            try
+            {
+                vm.Reset();
+                vm.Refresh();
+                ok++;
+            }
+            catch (Exception)
+            {
+                fail++;
+            }
+        }
+
+        ShowStatus(
+            fail == 0
+                ? $"Reset {ok} tweaks in {CategoryLabel(_currentCategory)} to default."
+                : $"Reset {ok}, skipped {fail} in {CategoryLabel(_currentCategory)}.",
+            fail == 0 ? InfoBarSeverity.Informational : InfoBarSeverity.Warning);
+    }
+
+    private void OnRelaunchAdmin(object sender, RoutedEventArgs e) => ElevationHelper.RelaunchAsAdmin();
+
+    private async void OnExport(object sender, RoutedEventArgs e)
+    {
+        var picker = new FileSavePicker
+        {
+            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            SuggestedFileName = "wintuner-profile",
+        };
+        picker.FileTypeChoices.Add("WinTuner profile", new[] { ".json" });
+
+        // WinUI file pickers require a window handle on Win32.
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+        var file = await picker.PickSaveFileAsync();
+        if (file is null)
+        {
+            return;
+        }
+
+        var json = WinTuner.Core.Profile.ProfileService.Export(Catalog.All, _engine);
+        await File.WriteAllTextAsync(file.Path, json);
+        ShowStatus($"Exported {Catalog.All.Count} tweak states to {file.Name}.", InfoBarSeverity.Success);
+    }
+
+    private async void OnImport(object sender, RoutedEventArgs e)
+    {
+        var picker = new FileOpenPicker
+        {
+            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+        };
+        picker.FileTypeFilter.Add(".json");
+
+        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
+
+        var file = await picker.PickSingleFileAsync();
+        if (file is null)
+        {
+            return;
+        }
+
+        string json;
+        try
+        {
+            json = await File.ReadAllTextAsync(file.Path);
+        }
+        catch (Exception ex)
+        {
+            ShowStatus($"Could not read profile: {ex.Message}", InfoBarSeverity.Error);
+            return;
+        }
+
+        var states = WinTuner.Core.Profile.ProfileService.Parse(json);
+        if (states.Count == 0)
+        {
+            ShowStatus("That file is not a valid WinTuner profile.", InfoBarSeverity.Error);
+            return;
+        }
+
+        int applied = 0, failed = 0;
+        foreach (var tweak in Catalog.All)
+        {
+            try
+            {
+                _engine.ApplyOrRevert(tweak, states);
+                applied++;
+            }
+            catch (Exception)
+            {
+                failed++;
+            }
+        }
+
+        // Re-sync every card from the registry so the UI reflects the new state.
+        foreach (var list in _byCategory.Values)
+        {
+            foreach (var vm in list)
+            {
+                vm.Refresh();
+            }
+        }
+
+        ShowStatus(
+            failed == 0
+                ? $"Imported profile: {applied} tweaks set."
+                : $"Imported profile: {applied} set, {failed} skipped (needs administrator).",
+            failed == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning);
     }
 
     private static string Friendly(Exception ex)

@@ -4,20 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WinTuner.App">
 
-    <Window.Resources>
-        <!-- Flat, left-aligned action button that mirrors the NavigationView rail style. -->
-        <Style x:Key="FlatNavButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Setter Property="Padding" Value="12,11" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="CornerRadius" Value="4" />
-        </Style>
-    </Window.Resources>
-
     <Grid>
         <NavigationView x:Name="NavView"
                         PaneDisplayMode="Left"

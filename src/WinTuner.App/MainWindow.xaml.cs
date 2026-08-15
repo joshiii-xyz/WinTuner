@@ -10,7 +10,7 @@ using Microsoft.UI.Xaml.Media;
 using Windows.Graphics;
 using Windows.Storage;
 using Windows.Storage.Pickers;
-using WinTuner.App.Profile;
+using WinTuner.Core.Profile;
 using WinTuner.Core.Registry;
 using WinTuner.Core.Tweaks;
 

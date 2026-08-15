@@ -132,6 +132,9 @@
         <member name="M:WinTuner.Core.Tweaks.TweakEngine.GetState(WinTuner.Core.Tweaks.RegistryTweak)">
             <summary>Reads the current state of the tweak relative to its enabled/disabled values.</summary>
         </member>
+        <member name="M:WinTuner.Core.Tweaks.TweakEngine.ScanAll(System.Collections.Generic.IEnumerable{WinTuner.Core.Tweaks.RegistryTweak})">
+            <summary>Reads the live state of every supplied tweak. Used by System Scan.</summary>
+        </member>
         <member name="M:WinTuner.Core.Tweaks.TweakEngine.ApplyOrRevert(WinTuner.Core.Tweaks.RegistryTweak,System.Collections.Generic.IReadOnlyDictionary{System.String,System.String})">
             <summary>
             Applies or reverts a tweak based on a desired state string ("Enabled"/"Disabled").

@@ -253,6 +253,17 @@ public class TweakEngineTests
     }
 
     [Fact]
+    public void Catalog_AllTweaks_HaveUniqueIds_AndReasonableCount()
+    {
+        var ids = Catalog.All.Select(t => t.Id).ToList();
+        Assert.Equal(ids.Count, ids.Distinct().Count());
+
+        // The catalog must remain substantial. If this drops, a tweak was
+        // accidentally removed rather than added.
+        Assert.True(Catalog.All.Count >= 90, $"Catalog shrank to {Catalog.All.Count} tweaks.");
+    }
+
+    [Fact]
     public void Revert_RestoresOriginalValue_WhenStartingNonDefault()
     {
         // A tweak whose "disabled" value is 0, but the registry starts at a

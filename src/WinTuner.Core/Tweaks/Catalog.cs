@@ -1385,5 +1385,424 @@ public static class Catalog
             RequiresReboot = true,
             Reference = "HKCU\\System\\GameConfigStore!GameDVR_FSEBehaviorMode (2 = forced off)",
         },
+
+        // ===================== EXPLORER (more) =====================
+        new()
+        {
+            Id = "explorer.hide-sync-notifications",
+            Title = "Hide sync-provider notifications (OneDrive)",
+            Description = "Stops File Explorer from showing 'sync provider' notifications (e.g. OneDrive sign-in " +
+                          "prompts) by setting ShowSyncProviderNotifications=0. The default (1) shows them. Removes " +
+                          "a common source of pop-ups in the navigation pane.",
+            Category = TweakCategory.Explorer,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+            ValueName = "ShowSyncProviderNotifications",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Explorer\\Advanced!ShowSyncProviderNotifications (0 = hidden)",
+        },
+
+        // ===================== PRIVACY (more) =====================
+        new()
+        {
+            Id = "privacy.disable-clipboard-history",
+            Title = "Disable clipboard history",
+            Description = "Turns off the local clipboard history (Win+V) by setting Clipboard " +
+                          "EnableClipboardHistory=0. The default (1) keeps a rolling history of copied items. " +
+                          "Disabling also clears the stored history.",
+            Category = TweakCategory.Privacy,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Clipboard",
+            ValueName = "EnableClipboardHistory",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Clipboard!EnableClipboardHistory (0 = off)",
+        },
+        new()
+        {
+            Id = "privacy.disable-cloud-clipboard",
+            Title = "Disable clipboard cloud sync",
+            Description = "Stops clipboard items from syncing across your devices (the cloud clipboard) by setting " +
+                          "Clipboard EnableCloudClipboard=0. The default (1) syncs copied content to your account. " +
+                          "Local clipboard still works.",
+            Category = TweakCategory.Privacy,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Clipboard",
+            ValueName = "EnableCloudClipboard",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Clipboard!EnableCloudClipboard (0 = off)",
+        },
+        new()
+        {
+            Id = "privacy.disable-telemetry",
+            Title = "Set telemetry level to Security (minimum)",
+            Description = "Forces Windows telemetry to the lowest level via the policy AllowTelemetry=0 (Security " +
+                          "only). The default (absent/3) sends enhanced diagnostic data. NOTE: on non-Enterprise " +
+                          "editions Windows may still send a baseline; this sets the strongest available policy. " +
+                          "Requires elevation.",
+            Category = TweakCategory.Privacy,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Policies\Microsoft\Windows\DataCollection",
+            ValueName = "AllowTelemetry",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 3,
+            DefaultValue = null,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\DataCollection!AllowTelemetry (policy; 0 = Security)",
+        },
+
+        // ===================== SYSTEM (more) =====================
+        new()
+        {
+            Id = "system.disable-toast-notifications",
+            Title = "Disable toast notifications",
+            Description = "Turns off the balloon/toast notifications from the action center by setting PushNotifications " +
+                          "ToastEnabled=0. The default (1) shows app and system toasts. Quiet but you may miss alerts.",
+            Category = TweakCategory.System,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\PushNotifications",
+            ValueName = "ToastEnabled",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\PushNotifications!ToastEnabled (0 = off)",
+        },
+        new()
+        {
+            Id = "system.disable-ink-workspace",
+            Title = "Disable Windows Ink Workspace",
+            Description = "Removes the Windows Ink Workspace (pen/drawing shortcuts) via the policy " +
+                          "AllowWindowsInkWorkspace=0. The default (1) shows it on pen-capable devices. Requires " +
+                          "elevation.",
+            Category = TweakCategory.System,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Policies\Microsoft\WindowsInkWorkspace",
+            ValueName = "AllowWindowsInkWorkspace",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = null,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\WindowsInkWorkspace!AllowWindowsInkWorkspace (policy; 0 = off)",
+        },
+        new()
+        {
+            Id = "system.disable-auto-maintenance",
+            Title = "Disable automatic maintenance",
+            Description = "Stops Windows from running its scheduled automatic maintenance (defrag, updates, " +
+                          "diagnostics) in the background by setting Maintenance MaintenanceDisabled=1. The default " +
+                          "(0) lets it run during idle. Requires elevation; you can still trigger maintenance " +
+                          "manually.",
+            Category = TweakCategory.System,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance",
+            ValueName = "MaintenanceDisabled",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Schedule\\Maintenance!MaintenanceDisabled (1 = off)",
+        },
+
+        // ===================== PERFORMANCE (more) =====================
+        new()
+        {
+            Id = "performance.disable-prefetcher",
+            Title = "Disable Prefetcher",
+            Description = "Sets the OS Prefetcher (which pre-loads commonly used files at boot) to off by setting " +
+                          "PrefetchParameters EnablePrefetcher=0. Can help on SSD-only systems where prefetching adds " +
+                          "little. REQUIRES ELEVATION and a reboot to take effect.",
+            Category = TweakCategory.Performance,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\PrefetchParameters",
+            ValueName = "EnablePrefetcher",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 3,
+            DefaultValue = 3,
+            AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
+            Reference = "HKLM\\...\\PrefetchParameters!EnablePrefetcher (0 = off)",
+        },
+        new()
+        {
+            Id = "performance.disable-paging-executive",
+            Title = "Keep executive in RAM (no paging)",
+            Description = "Prevents the kernel/executive from being paged to disk by setting Memory Management " +
+                          "DisablePagingExecutive=1, keeping core OS code in physical RAM. Helps systems with ample " +
+                          "RAM. REQUIRES ELEVATION and a reboot.",
+            Category = TweakCategory.Performance,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management",
+            ValueName = "DisablePagingExecutive",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
+            Reference = "HKLM\\...\\Memory Management!DisablePagingExecutive (1 = keep in RAM)",
+        },
+        new()
+        {
+            Id = "performance.disable-last-access-timestamp",
+            Title = "Disable NTFS last-access timestamps",
+            Description = "Stops NTFS from updating the last-access time on every file read (NtfsDisableLastAccessUpdate=1), " +
+                          "reducing disk writes on busy volumes. The default (0) keeps the stamp updated. Harmless on " +
+                          "modern SSDs but can matter on high-IOPS workloads.",
+            Category = TweakCategory.Performance,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Control\FileSystem",
+            ValueName = "NtfsDisableLastAccessUpdate",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\FileSystem!NtfsDisableLastAccessUpdate (1 = off)",
+        },
+        new()
+        {
+            Id = "performance.disable-8dot3-names",
+            Title = "Disable 8.3 filename creation",
+            Description = "Stops NTFS from generating legacy '8.3' (DOS-style, e.g. PROGRA~1) filenames for new files " +
+                          "(NtfsDisable8dot3NameCreation=1), slightly reducing metadata overhead. The default (0) keeps " +
+                          "8.3 names for compatibility with old software.",
+            Category = TweakCategory.Performance,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Control\FileSystem",
+            ValueName = "NtfsDisable8dot3NameCreation",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\FileSystem!NtfsDisable8dot3NameCreation (1 = off)",
+        },
+
+        // ===================== APPEARANCE (more) =====================
+        new()
+        {
+            Id = "appearance.never-combine-taskbar",
+            Title = "Never combine taskbar buttons",
+            Description = "Makes the Windows taskbar show each open window as its own labeled button instead of " +
+                          "grouping them, by setting Explorer\\Advanced TaskbarGlomLevel=2. The default (0) combines " +
+                          "buttons of the same app. A taskbar restart/sign-in is needed to apply.",
+            Category = TweakCategory.Appearance,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+            ValueName = "TaskbarGlomLevel",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 2,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Explorer\\Advanced!TaskbarGlomLevel (2 = never combine)",
+        },
+        new()
+        {
+            Id = "appearance.disable-taskbar-animations",
+            Title = "Disable taskbar animations",
+            Description = "Turns off the slide/fade animations on the taskbar (e.g. when buttons appear) by setting " +
+                          "Control Panel Desktop TaskbarAnimations=0. The default (1) animates. Minor visual " +
+                          "preference; can feel snappier.",
+            Category = TweakCategory.Appearance,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Control Panel\Desktop",
+            ValueName = "TaskbarAnimations",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\Control Panel\\Desktop!TaskbarAnimations (0 = off)",
+        },
+        new()
+        {
+            Id = "appearance.disable-window-animations",
+            Title = "Disable window open/close animations",
+            Description = "Removes the minimize/maximize/restore animations (the classic 'roll up' effect) by setting " +
+                          "WindowMetrics MinAnimate=0. The default (1) animates windows. Can make the desktop feel " +
+                          "more responsive on slower machines. A sign-out/in may be needed.",
+            Category = TweakCategory.Appearance,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Control Panel\Desktop\WindowMetrics",
+            ValueName = "MinAnimate",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\Control Panel\\Desktop\\WindowMetrics!MinAnimate (0 = off)",
+        },
+
+        // ===================== SECURITY (more) =====================
+        new()
+        {
+            Id = "security.disable-remote-desktop",
+            Title = "Disable Remote Desktop (incoming)",
+            Description = "Blocks incoming Remote Desktop connections by setting Terminal Server " +
+                          "fDenyTSConnections=1. The default (0) allows RDP. Useful on machines that never need " +
+                          "remote access. REQUIRES ELEVATION and a reboot (or TermService restart) to fully take " +
+                          "effect.",
+            Category = TweakCategory.Security,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Control\Terminal Server",
+            ValueName = "fDenyTSConnections",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
+            Reference = "HKLM\\...\\Terminal Server!fDenyTSConnections (1 = denied)",
+        },
+        new()
+        {
+            Id = "security.require-ctrl-alt-del",
+            Title = "Require Ctrl+Alt+Delete at sign-in",
+            Description = "Forces the secure Ctrl+Alt+Delete gesture before the sign-in prompt by setting Winlogon " +
+                          "DisableCAD=0. The default (1) allows signing in without it. Adds a phishing-resistant step. " +
+                          "Requires elevation.",
+            Category = TweakCategory.Security,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon",
+            ValueName = "DisableCAD",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Winlogon!DisableCAD (0 = required)",
+        },
+        new()
+        {
+            Id = "security.disable-script-host",
+            Title = "Disable Windows Script Host",
+            Description = "Disables the Windows Script Host (wscript/cscript) so .vbs/.js files no longer run, " +
+                          "blocking a common malware delivery path, by setting Script Host Settings Enabled=0. The " +
+                          "default (1) allows scripts. Requires elevation; legitimate scripts (rare) will stop.",
+            Category = TweakCategory.Security,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Microsoft\Windows Script Host\Settings",
+            ValueName = "Enabled",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Windows Script Host\\Settings!Enabled (0 = off)",
+        },
+        new()
+        {
+            Id = "security.disable-rdp-password-saving",
+            Title = "Disable saving RDP credentials",
+            Description = "Prevents the Remote Desktop client from storing passwords locally via the policy " +
+                          "Terminal Services DisablePasswordSaving=1. The default (absent) allows saving credentials. " +
+                          "Requires elevation.",
+            Category = TweakCategory.Security,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services",
+            ValueName = "DisablePasswordSaving",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = null,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Terminal Services!DisablePasswordSaving (policy; 1 = off)",
+        },
+        new()
+        {
+            Id = "security.enable-uac-secure-desktop",
+            Title = "UAC prompts on secure desktop",
+            Description = "Makes User Account Control elevation prompts appear on the secure (dimmed) desktop by " +
+                          "setting Policies\\System PromptOnSecureDesktop=1, so malicious windows can't spoof the " +
+                          "prompt. The default (0) shows prompts on the interactive desktop. Requires elevation.",
+            Category = TweakCategory.Security,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System",
+            ValueName = "PromptOnSecureDesktop",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 1,
+            DisabledValue = 0,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKLM\\...\\Policies\\System!PromptOnSecureDesktop (1 = secure)",
+        },
+
+        // ===================== NETWORK (more) =====================
+        new()
+        {
+            Id = "network.disable-ics",
+            Title = "Disable Internet Connection Sharing",
+            Description = "Stops the Internet Connection Sharing service (SharedAccess) by setting its Start value to " +
+                          "4 (disabled). ICS lets the PC act as a router/NAT for other devices; most home users do " +
+                          "not need it and it expands the network attack surface. REQUIRES ELEVATION and a reboot. " +
+                          "Reset deletes the value to restore the default service start.",
+            Category = TweakCategory.Network,
+            Hive = RegistryHive.LocalMachine,
+            SubKey = @"SYSTEM\CurrentControlSet\Services\SharedAccess",
+            ValueName = "Start",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 4,
+            DisabledValue = 2,
+            DefaultValue = null,
+            AbsentState = TweakState.Disabled,
+            RequiresReboot = true,
+            Reference = "HKLM\\...\\Services\\SharedAccess!Start (4 = disabled)",
+        },
+        new()
+        {
+            Id = "network.disable-proxy-autodetect",
+            Title = "Disable proxy auto-detection (WPAD)",
+            Description = "Turns off automatic proxy discovery (WPAD) by setting Internet Settings AutoDetect=0. The " +
+                          "default (1) lets Windows probe for a proxy configuration. Disabling avoids a legacy " +
+                          "spoofing path on untrusted networks.",
+            Category = TweakCategory.Network,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings",
+            ValueName = "AutoDetect",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 1,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\...\\Internet Settings!AutoDetect (0 = off)",
+        },
+
+        // ===================== GAMING (more) =====================
+        new()
+        {
+            Id = "gaming.disable-active-window-tracking",
+            Title = "Disable focus-follows-mouse (active window tracking)",
+            Description = "Stops Windows from focusing whatever window the mouse is hovering (ActiveWindowTracking " +
+                          "under Control Panel\\Desktop), which some games and mice trigger accidentally. The default " +
+                          "(0) keeps focus on the window you click. Set to 0 to ensure click-to-focus only.",
+            Category = TweakCategory.Gaming,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = @"Control Panel\Desktop",
+            ValueName = "ActiveWindowTracking",
+            ValueKind = RegistryValueKind.DWord,
+            EnabledValue = 0,
+            DisabledValue = 1,
+            DefaultValue = 0,
+            AbsentState = TweakState.Disabled,
+            Reference = "HKCU\\Control Panel\\Desktop!ActiveWindowTracking (0 = click-to-focus)",
+        },
     };
 }

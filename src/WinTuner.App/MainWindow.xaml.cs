@@ -32,6 +32,9 @@ public sealed partial class MainWindow : Window
     private const string ScanViewTag = "Scan";
     private object? _categoryView;
     private bool _onScanView;
+    private bool _inSearchMode;
+    private TweakCategory _preSearchCategory;
+    private bool _preSearchWasScan;
 
     public MainWindow()
     {
@@ -96,6 +99,7 @@ public sealed partial class MainWindow : Window
     {
         _currentCategory = cat;
         _onScanView = false;
+        _inSearchMode = false;
         CategoryTitle.Text = CategoryLabel(cat);
         SubtitleText.Text = "Toggle to apply or revert. Every change writes a citable registry value you can reset anytime.";
         ApplyAllButton.Visibility = Visibility.Visible;
@@ -208,9 +212,90 @@ public sealed partial class MainWindow : Window
             fail == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning);
     }
 
+    private void OnSearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput)
+        {
+            return;
+        }
+
+        string query = (sender.Text ?? string.Empty).Trim().ToLowerInvariant();
+        if (string.IsNullOrEmpty(query))
+        {
+            // Empty query: return to whatever view was active before searching.
+            _inSearchMode = false;
+            if (_preSearchWasScan)
+            {
+                ShowScan();
+            }
+            else
+            {
+                ShowCategory(_preSearchCategory);
+            }
+
+            return;
+        }
+
+        if (!_inSearchMode)
+        {
+            _inSearchMode = true;
+            _preSearchWasScan = _onScanView;
+            _preSearchCategory = _currentCategory;
+        }
+
+        var matches = Catalog.All
+            .Where(t => t.Title.ToLowerInvariant().Contains(query) ||
+                        t.Description.ToLowerInvariant().Contains(query) ||
+                        (t.Reference ?? string.Empty).ToLowerInvariant().Contains(query))
+            .Select(t => new ScanRowViewModel(t, _engine))
+            .OrderBy(r => r.CategoryLabel)
+            .ThenBy(r => r.Title)
+            .ToList();
+
+        BuildSearchResults(matches, query);
+    }
+
+    private void BuildSearchResults(IReadOnlyList<ScanRowViewModel> matches, string query)
+    {
+        _currentCategory = default;
+        _onScanView = false;
+        CategoryTitle.Text = $"Search: \"{query}\"";
+        SubtitleText.Text = $"{matches.Count} tweak(s) match across the whole catalog.";
+        ApplyAllButton.Visibility = Visibility.Collapsed;
+        ResetAllButton.Visibility = Visibility.Collapsed;
+        RefreshButton.Visibility = Visibility.Collapsed;
+        AdminBanner.Visibility = Visibility.Collapsed;
+
+        if (matches.Count == 0)
+        {
+            var empty = new TextBlock
+            {
+                Text = "No tweaks match that search.",
+                FontSize = 14,
+                Opacity = 0.7,
+                Margin = new Thickness(0, 8, 0, 0),
+            };
+            var scroll = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+            scroll.Content = empty;
+            ContentArea.Content = scroll;
+            return;
+        }
+
+        var panel = new StackPanel { Spacing = 10 };
+        foreach (var row in matches)
+        {
+            panel.Children.Add(BuildScanRow(row));
+        }
+
+        var scroller = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+        scroller.Content = panel;
+        ContentArea.Content = scroller;
+    }
+
     private void ShowScan()
     {
         _onScanView = true;
+        _inSearchMode = false;
         CategoryTitle.Text = "System Scan";
         SubtitleText.Text = "Live state of every tweak, read directly from your registry. Apply or revert any item inline.";
         ApplyAllButton.Visibility = Visibility.Collapsed;

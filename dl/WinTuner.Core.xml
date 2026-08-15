@@ -91,9 +91,66 @@
         </member>
         <member name="T:WinTuner.Core.Tweaks.Catalog">
             <summary>
-            The full catalog of known tweaks. Every entry is declarative data.
-            Descriptions state exactly what registry value changes; they do not speculate
-            about unverified side effects. New tweaks are added here only - no code changes.
+            Tweak catalog for the Appearance category. One file per category keeps the catalog organized and
+            future-proof as it grows toward thousands of entries - each category is edited independently
+            and every entry stays in its own file. All entries are declarative data; descriptions state
+            exactly which registry value changes. An entry's Id prefix always matches its Category.
+            New tweaks are added here only - no code changes.
+            </summary>
+            <summary>
+            The full catalog of known tweaks. Each category lives in its own Catalog.&lt;Category&gt;.cs
+            partial file (so the catalog scales to thousands of entries without one giant file) and is
+            concatenated here into Catalog.All. Every entry is declarative data - adding a tweak is just
+            a new entry in the right per-category file, no code changes anywhere else.
+            </summary>
+            <summary>
+            Tweak catalog for the Explorer category. One file per category keeps the catalog organized and
+            future-proof as it grows toward thousands of entries - each category is edited independently
+            and every entry stays in its own file. All entries are declarative data; descriptions state
+            exactly which registry value changes. An entry's Id prefix always matches its Category.
+            New tweaks are added here only - no code changes.
+            </summary>
+            <summary>
+            Tweak catalog for the Gaming category. One file per category keeps the catalog organized and
+            future-proof as it grows toward thousands of entries - each category is edited independently
+            and every entry stays in its own file. All entries are declarative data; descriptions state
+            exactly which registry value changes. An entry's Id prefix always matches its Category.
+            New tweaks are added here only - no code changes.
+            </summary>
+            <summary>
+            Tweak catalog for the Network category. One file per category keeps the catalog organized and
+            future-proof as it grows toward thousands of entries - each category is edited independently
+            and every entry stays in its own file. All entries are declarative data; descriptions state
+            exactly which registry value changes. An entry's Id prefix always matches its Category.
+            New tweaks are added here only - no code changes.
+            </summary>
+            <summary>
+            Tweak catalog for the Performance category. One file per category keeps the catalog organized and
+            future-proof as it grows toward thousands of entries - each category is edited independently
+            and every entry stays in its own file. All entries are declarative data; descriptions state
+            exactly which registry value changes. An entry's Id prefix always matches its Category.
+            New tweaks are added here only - no code changes.
+            </summary>
+            <summary>
+            Tweak catalog for the Privacy category. One file per category keeps the catalog organized and
+            future-proof as it grows toward thousands of entries - each category is edited independently
+            and every entry stays in its own file. All entries are declarative data; descriptions state
+            exactly which registry value changes. An entry's Id prefix always matches its Category.
+            New tweaks are added here only - no code changes.
+            </summary>
+            <summary>
+            Tweak catalog for the Security category. One file per category keeps the catalog organized and
+            future-proof as it grows toward thousands of entries - each category is edited independently
+            and every entry stays in its own file. All entries are declarative data; descriptions state
+            exactly which registry value changes. An entry's Id prefix always matches its Category.
+            New tweaks are added here only - no code changes.
+            </summary>
+            <summary>
+            Tweak catalog for the System category. One file per category keeps the catalog organized and
+            future-proof as it grows toward thousands of entries - each category is edited independently
+            and every entry stays in its own file. All entries are declarative data; descriptions state
+            exactly which registry value changes. An entry's Id prefix always matches its Category.
+            New tweaks are added here only - no code changes.
             </summary>
         </member>
         <member name="T:WinTuner.Core.Tweaks.RegistryTweak">

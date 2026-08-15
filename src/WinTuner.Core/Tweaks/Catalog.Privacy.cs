@@ -279,5 +279,37 @@ public static partial class Catalog
         RequiresReboot = true,
         Reference = "HKLM\\...\\Services\\DiagTrack!Start (4 = disabled)",
         },
+        new()
+        {
+        Id = "privacy.disable-cloud-search-in-start",
+        Title = "Disable cloud content in Start search",
+        Description = "Removes cloud, OneDrive, and web-connected results from the Start menu search by setting CloudSearchEnabled=0. The default (1) blends cloud content into local Start search. Keeps search local and reduces calls to Microsoft services.",
+        Category = TweakCategory.Privacy,
+        Hive = RegistryHive.CurrentUser,
+        SubKey = @"Software\Microsoft\Windows\CurrentVersion\Search",
+        ValueName = "CloudSearchEnabled",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 0,
+        DisabledValue = 1,
+        DefaultValue = 1,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKCU\\...\\Search!CloudSearchEnabled (0 = local only)",
+        },
+        new()
+        {
+        Id = "privacy.disable-lockscreen-tips",
+        Title = "Disable lock screen tips and suggestions",
+        Description = "Stops Windows from showing tips, fun facts, and promotional content on the lock screen by setting ContentDeliveryManager SubscribedContent-338387=0. The default (1) rotates that content on the lock screen. Reduces unsolicited lock-screen noise.",
+        Category = TweakCategory.Privacy,
+        Hive = RegistryHive.CurrentUser,
+        SubKey = @"Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager",
+        ValueName = "SubscribedContent-338387",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 0,
+        DisabledValue = 1,
+        DefaultValue = 1,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKCU\\...\\ContentDeliveryManager!SubscribedContent-338387 (0 = off)",
+        },
     };
 }

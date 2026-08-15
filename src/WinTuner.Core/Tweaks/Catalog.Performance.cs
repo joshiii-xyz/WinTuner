@@ -289,5 +289,38 @@ public static partial class Catalog
         RequiresReboot = true,
         Reference = "HKLM\\...\\Services\\WSearch!Start (4 = disabled)",
         },
+        new()
+        {
+        Id = "performance.disable-system-restore",
+        Title = "Disable System Restore",
+        Description = "Turns off System Restore system-wide by setting SystemRestore DisableSR=1, stopping the creation of restore points and freeing the disk space they consume. The default (0) keeps restore points. Requires elevation; you lose the ability to roll back system changes.",
+        Category = TweakCategory.Performance,
+        Hive = RegistryHive.LocalMachine,
+        SubKey = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore",
+        ValueName = "DisableSR",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 1,
+        DisabledValue = 0,
+        DefaultValue = 0,
+        AbsentState = TweakState.Disabled,
+        Reference = "HKLM\\...\\SystemRestore!DisableSR (1 = off)",
+        },
+        new()
+        {
+        Id = "performance.enable-large-system-cache",
+        Title = "Enable large system cache (file server)",
+        Description = "Biases the memory manager to keep more file cache and less per-process working set by setting Memory Management LargeSystemCache=1, which can speed up file serving and large copies. The default (0) balances the two. REQUIRES ELEVATION and a reboot; on small-RAM desktops it can hurt interactive performance.",
+        Category = TweakCategory.Performance,
+        Hive = RegistryHive.LocalMachine,
+        SubKey = @"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management",
+        ValueName = "LargeSystemCache",
+        ValueKind = RegistryValueKind.DWord,
+        EnabledValue = 1,
+        DisabledValue = 0,
+        DefaultValue = 0,
+        AbsentState = TweakState.Disabled,
+        RequiresReboot = true,
+        Reference = "HKLM\\...\\Memory Management!LargeSystemCache (1 = on)",
+        },
     };
 }

@@ -587,6 +587,8 @@ public sealed partial class MainWindow : Window
                 ? $"Imported profile: {applied} tweaks set."
                 : $"Imported profile: {applied} set, {failed} skipped (needs administrator).",
             failed == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning);
+    }
+
     private async void OnSnapshot(object sender, RoutedEventArgs e)
     {
         var picker = new FileSavePicker

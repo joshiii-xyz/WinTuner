@@ -21,16 +21,33 @@ jobs:
       - name: Restore
         run: dotnet restore WinTuner.sln
 
-      - name: Build (x64, Release)
-        run: dotnet build WinTuner.sln -c Release -p:Platform=x64 --no-restore
+      # The WinUI 3 app generates a `.pri` resource index, which requires the
+      # AppxPackage MSBuild tasks that only ship with Visual Studio's MSBuild
+      # (not the bare `dotnet build` SDK toolset). So we build the full solution
+      # with VS's MSBuild.exe located via vswhere, then run the headless engine
+      # tests with `dotnet test`.
+      - name: Build solution with Visual Studio MSBuild
+        shell: pwsh
+        run: |
+          $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" `
+            -latest -requires Microsoft.Component.MSBuild `
+            -find "**\MSBuild\Current\Bin\MSBuild.exe" | Select-Object -First 1
+          if (-not $msbuild) {
+            $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" `
+              -latest -requires Microsoft.Component.MSBuild `
+              -find "**\MSBuild.exe" | Select-Object -First 1
+          }
+          if (-not $msbuild) { throw "MSBuild not found on runner." }
+          Write-Host "Using MSBuild: $msbuild"
+          & $msbuild (Join-Path $PWD "WinTuner.sln") /p:Platform=x64 /p:Configuration=Release /m
 
-      - name: Test
-        run: dotnet test WinTuner.sln -c Release -p:Platform=x64 --no-build --verbosity normal
+      - name: Test (headless engine suite)
+        run: dotnet test src/WinTuner.Core.Tests/WinTuner.Core.Tests.csproj -c Release -p:Platform=x64 --verbosity normal
 
       - name: Upload app artifact
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: WinTuner-app-x64
-          path: src/WinTuner.App/bin/Release/net8.0-windows10.0.26100.0/x64/WinTuner*
+          path: src/WinTuner.App/bin/x64/Release/net8.0-windows10.0.26100.0
           if-no-files-found: warn

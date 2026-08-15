@@ -129,6 +129,46 @@ public class TweakEngineTests
     }
 
     [Fact]
+    public void Apply_StringValuedTweak_WritesString()
+    {
+        var fake = new FakeRegistryProvider();
+        var engine = new TweakEngine(fake);
+        var tweak = new RegistryTweak
+        {
+            Id = "test.string",
+            Title = "String sample",
+            Description = "A string-valued tweak used to exercise non-DWord kinds in the engine.",
+            Category = TweakCategory.Performance,
+            Hive = RegistryHive.CurrentUser,
+            SubKey = TestSubKey,
+            ValueName = "MenuShowDelay",
+            ValueKind = RegistryValueKind.String,
+            EnabledValue = "0",
+            DisabledValue = "400",
+            DefaultValue = "400",
+            AbsentState = TweakState.Disabled,
+        };
+
+        engine.Apply(tweak);
+        Assert.Equal("0", fake.GetValue(RegistryHive.CurrentUser, TestSubKey, "MenuShowDelay"));
+
+        engine.Revert(tweak);
+        Assert.Equal("400", fake.GetValue(RegistryHive.CurrentUser, TestSubKey, "MenuShowDelay"));
+    }
+
+    [Fact]
+    public void Catalog_ContainsStringValuedTweaks()
+    {
+        var stringTweaks = Catalog.All.Where(t => t.ValueKind == RegistryValueKind.String).ToList();
+        Assert.NotEmpty(stringTweaks);
+        foreach (var t in stringTweaks)
+        {
+            Assert.False(string.IsNullOrWhiteSpace((string?)t.EnabledValue), $"String tweak {t.Id} has no EnabledValue.");
+            Assert.False(string.IsNullOrWhiteSpace((string?)t.DisabledValue), $"String tweak {t.Id} has no DisabledValue.");
+        }
+    }
+
+    [Fact]
     public void Catalog_AllTweaks_HaveNonNullKeyAndValueName()
     {
         foreach (var t in Catalog.All)

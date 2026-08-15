@@ -2,58 +2,105 @@
     x:Class="WinTuner.App.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:models="using:WinTuner.Core.Tweaks"
-    Title="WinTuner">
+    xmlns:local="using:WinTuner.App">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="180" />
-            <ColumnDefinition Width="320" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <NavigationView x:Name="NavView"
+                        PaneDisplayMode="Left"
+                        IsBackButtonVisible="Collapsed"
+                        IsSettingsVisible="False"
+                        OpenPaneLength="240"
+                        PaneTitle="WinTuner"
+                        SelectionChanged="OnNavSelectionChanged">
 
-        <ListView x:Name="CategoryList"
-                  Grid.Column="0"
-                  SelectionChanged="OnCategorySelected" />
-
-        <ListView x:Name="TweakList"
-                  Grid.Column="1"
-                  SelectionChanged="OnTweakSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:RegistryTweak">
-                    <StackPanel Margin="8">
-                        <TextBlock Text="{x:Bind Title}"
-                                   FontWeight="SemiBold"
-                                   TextWrapping="Wrap" />
-                        <TextBlock Text="{x:Bind Id}"
-                                   FontSize="11"
-                                   Opacity="0.6" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-        <ScrollViewer Grid.Column="2" Padding="24">
-            <StackPanel Spacing="12">
-                <TextBlock x:Name="TitleText"
-                           Style="{StaticResource TitleTextBlockStyle}" />
-                <TextBlock x:Name="DescText"
-                           TextWrapping="Wrap"
-                           Style="{StaticResource BodyTextBlockStyle}" />
-                <TextBlock x:Name="RefText"
+            <NavigationView.PaneFooter>
+                <TextBlock Margin="16,10"
                            FontSize="11"
                            Opacity="0.6"
-                           TextWrapping="Wrap" />
-                <TextBlock x:Name="StateText"
-                           FontWeight="SemiBold" />
-                <StackPanel Orientation="Horizontal" Spacing="12">
-                    <Button x:Name="ApplyBtn" Content="Apply" Click="OnApply" />
-                    <Button x:Name="RevertBtn" Content="Revert" Click="OnRevert" />
-                    <Button x:Name="ResetBtn" Content="Reset to default" Click="OnReset" />
-                </StackPanel>
-                <TextBlock x:Name="StatusText"
-                           Foreground="{StaticResource AccentTextFillColorPrimaryBrush}" />
-            </StackPanel>
-        </ScrollViewer>
+                           TextWrapping="Wrap"
+                           Text="Registry-backed • reversible" />
+            </NavigationView.PaneFooter>
+
+            <Grid Padding="28,18,28,26">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="CategoryTitle"
+                           Grid.Row="0"
+                           Style="{StaticResource TitleTextBlockStyle}"
+                           Margin="0,0,0,2" />
+
+                <TextBlock Grid.Row="1"
+                           FontSize="13"
+                           Opacity="0.7"
+                           Margin="0,0,0,14"
+                           TextWrapping="Wrap"
+                           Text="Toggle to apply or revert. Every change writes a citable registry value you can reset anytime." />
+
+                <InfoBar x:Name="StatusBar"
+                         Grid.Row="2"
+                         Margin="0,0,0,14"
+                         IsOpen="False" />
+
+                <ScrollViewer Grid.Row="3"
+                              VerticalScrollBarVisibility="Auto">
+                    <ItemsRepeater x:Name="TweakList">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="local:TweakViewModel">
+                                <Border Margin="0,0,0,14"
+                                        HorizontalAlignment="Stretch"
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Padding="18">
+                                    <Grid ColumnDefinitions="*,Auto"
+                                          RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                                   Text="{x:Bind Title}"
+                                                   Style="{StaticResource SubtitleTextBlockStyle}" />
+                                        <ToggleSwitch Grid.Row="0" Grid.Column="1"
+                                                      IsOn="{x:Bind IsOn, Mode=TwoWay}"
+                                                      Toggled="OnToggle"
+                                                      VerticalAlignment="Center" />
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                                   Text="{x:Bind StateText}"
+                                                   FontSize="12" Opacity="0.7"
+                                                   Margin="0,4,0,10" />
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                                   Text="{x:Bind Description}"
+                                                   TextWrapping="Wrap"
+                                                   Style="{StaticResource BodyTextBlockStyle}"
+                                                   Margin="0,0,0,10" />
+                                        <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                                   Text="{x:Bind Reference}"
+                                                   FontFamily="Consolas"
+                                                   FontSize="12" Opacity="0.7"
+                                                   TextWrapping="Wrap"
+                                                   IsTextSelectionEnabled="True"
+                                                   Margin="0,0,0,12" />
+                                        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                                                    Orientation="Horizontal"
+                                                    Spacing="14">
+                                            <Button Content="Reset to default"
+                                                    Click="OnReset"
+                                                    Style="{StaticResource AccentButtonStyle}" />
+                                            <TextBlock Text="Requires administrator"
+                                                       Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                                                       Visibility="{x:Bind ElevationVisibility}"
+                                                       VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </ScrollViewer>
+            </Grid>
+        </NavigationView>
     </Grid>
 </Window>

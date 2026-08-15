@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WinTuner.Core</name>
+    </assembly>
+    <members>
+        <member name="T:WinTuner.Core.Registry.FakeRegistryProvider">
+            <summary>
+            In-memory registry for unit tests. Mirrors the subset of semantics the
+            engine relies on, including value-kind awareness for round-trip fidelity.
+            </summary>
+        </member>
+        <member name="T:WinTuner.Core.Registry.IRegistryProvider">
+            <summary>
+            Abstraction over the Windows registry so tweak logic can be unit-tested
+            against an in-memory fake instead of mutating the real machine.
+            </summary>
+        </member>
+        <member name="M:WinTuner.Core.Registry.IRegistryProvider.GetValue(Microsoft.Win32.RegistryHive,System.String,System.String)">
+            <summary>Reads a value. Returns null if the key or value does not exist.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Registry.IRegistryProvider.SetValue(Microsoft.Win32.RegistryHive,System.String,System.String,System.Object,Microsoft.Win32.RegistryValueKind)">
+            <summary>Writes a value, creating the key path if necessary.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Registry.IRegistryProvider.DeleteValue(Microsoft.Win32.RegistryHive,System.String,System.String)">
+            <summary>Deletes a single value. No-op if absent.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Registry.IRegistryProvider.KeyExists(Microsoft.Win32.RegistryHive,System.String)">
+            <summary>True if the key exists.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Registry.IRegistryProvider.DeleteKey(Microsoft.Win32.RegistryHive,System.String)">
+            <summary>Deletes a key and all its subkeys. No-op if absent.</summary>
+        </member>
+        <member name="T:WinTuner.Core.Registry.RealRegistryProvider">
+            <summary>
+            Real registry access backed by Microsoft.Win32.Registry.
+            Operations that write to HKLM require the process to run elevated.
+            </summary>
+        </member>
+        <member name="T:WinTuner.Core.Tweaks.Catalog">
+            <summary>
+            The full catalog of known tweaks. Every entry is declarative data.
+            Descriptions state exactly what registry value changes; they do not speculate
+            about unverified side effects. New tweaks are added here only - no code changes.
+            </summary>
+        </member>
+        <member name="T:WinTuner.Core.Tweaks.RegistryTweak">
+            <summary>
+            A declarative, registry-backed tweak. Pure data: the engine interprets it,
+            so adding a tweak is just a new entry in the catalog - no new code path.
+            </summary>
+        </member>
+        <member name="P:WinTuner.Core.Tweaks.RegistryTweak.Id">
+            <summary>Stable identifier, e.g. "explorer.show-file-extensions".</summary>
+        </member>
+        <member name="P:WinTuner.Core.Tweaks.RegistryTweak.Title">
+            <summary>Human-readable title shown in the UI.</summary>
+        </member>
+        <member name="P:WinTuner.Core.Tweaks.RegistryTweak.Description">
+            <summary>Thorough, factual description of what the tweak changes and its effect.</summary>
+        </member>
+        <member name="P:WinTuner.Core.Tweaks.RegistryTweak.EnabledValue">
+            <summary>Value written when the tweak is applied (enabled).</summary>
+        </member>
+        <member name="P:WinTuner.Core.Tweaks.RegistryTweak.DisabledValue">
+            <summary>Value written when the tweak is reverted (disabled).</summary>
+        </member>
+        <member name="P:WinTuner.Core.Tweaks.RegistryTweak.DefaultValue">
+            <summary>The value the OS ships with by default, used by "Reset to default". Null means delete the value.</summary>
+        </member>
+        <member name="P:WinTuner.Core.Tweaks.RegistryTweak.AbsentState">
+            <summary>What the "value absent" condition means for this tweak.</summary>
+        </member>
+        <member name="P:WinTuner.Core.Tweaks.RegistryTweak.RequiresElevation">
+            <summary>True if applying requires writing to HKLM and therefore elevation.</summary>
+        </member>
+        <member name="P:WinTuner.Core.Tweaks.RegistryTweak.Reference">
+            <summary>Short, citable note on where this setting lives (for transparency).</summary>
+        </member>
+        <member name="T:WinTuner.Core.Tweaks.TweakCategory">
+            <summary>Top-level grouping for tweaks shown in the navigation rail.</summary>
+        </member>
+        <member name="T:WinTuner.Core.Tweaks.TweakEngine">
+            <summary>
+            Interprets <see cref="T:WinTuner.Core.Tweaks.RegistryTweak"/> records against an <see cref="T:WinTuner.Core.Registry.IRegistryProvider"/>.
+            All operations are synchronous against the registry; the engine carries no UI state.
+            </summary>
+        </member>
+        <member name="M:WinTuner.Core.Tweaks.TweakEngine.Apply(WinTuner.Core.Tweaks.RegistryTweak)">
+            <summary>Applies (enables) the tweak.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Tweaks.TweakEngine.Revert(WinTuner.Core.Tweaks.RegistryTweak)">
+            <summary>Reverts (disables) the tweak.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Tweaks.TweakEngine.Reset(WinTuner.Core.Tweaks.RegistryTweak)">
+            <summary>Resets the value to the OS default. If DefaultValue is null, the value is deleted.</summary>
+        </member>
+        <member name="M:WinTuner.Core.Tweaks.TweakEngine.GetState(WinTuner.Core.Tweaks.RegistryTweak)">
+            <summary>Reads the current state of the tweak relative to its enabled/disabled values.</summary>
+        </member>
+        <member name="T:WinTuner.Core.Tweaks.TweakState">
+            <summary>Whether a tweak is currently active on the machine.</summary>
+        </member>
+        <member name="F:WinTuner.Core.Tweaks.TweakState.Enabled">
+            <summary>The registry value matches the tweak's enabled state.</summary>
+        </member>
+        <member name="F:WinTuner.Core.Tweaks.TweakState.Disabled">
+            <summary>The registry value matches the tweak's disabled (reverted) state.</summary>
+        </member>
+        <member name="F:WinTuner.Core.Tweaks.TweakState.Unknown">
+            <summary>The current value is neither enabled nor disabled (e.g. absent or a third state).</summary>
+        </member>
+    </members>
+</doc>

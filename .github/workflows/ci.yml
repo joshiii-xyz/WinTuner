@@ -42,7 +42,7 @@ jobs:
           & $msbuild (Join-Path $PWD "WinTuner.sln") /p:Platform=x64 /p:Configuration=Release /m
 
       - name: Test (headless engine suite)
-        run: dotnet test src/WinTuner.Core.Tests/WinTuner.Core.Tests.csproj -c Release -p:Platform=x64 --verbosity normal
+        run: dotnet test WinTuner.sln -c Release -p:Platform=x64 --verbosity normal
 
       - name: Upload app artifact
         if: success()

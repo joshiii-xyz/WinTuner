@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Windows.Graphics;
-using WinTuner.Core.Profile;
 using WinTuner.Core.Registry;
 using WinTuner.Core.Tweaks;
 
@@ -543,158 +540,6 @@ public sealed partial class MainWindow : Window
         {
             ShowStatus($"Could not restart Windows: {ex.Message}", InfoBarSeverity.Error);
         }
-    }
-
-    // WinTuner ships unpackaged, so the WinRT file pickers are unreliable; we use
-    // the native Common Item Dialog via NativeFileDialog instead. All four profile
-    // /snapshot handlers funnel through here for one consistent failure path.
-    private IntPtr ThisWindowHandle() => WinRT.Interop.WindowNative.GetWindowHandle(this);
-
-    private void OnExport(object sender, RoutedEventArgs e)
-    {
-        var path = NativeFileDialog.ShowSaveFileDialog(ThisWindowHandle(), "Export WinTuner profile", "wintuner-profile");
-        if (path is null)
-        {
-            return;
-        }
-
-        try
-        {
-            var json = WinTuner.Core.Profile.ProfileService.Export(Catalog.All, _engine);
-            File.WriteAllText(path, json);
-            ShowStatus($"Exported {Catalog.All.Count} tweak states to {Path.GetFileName(path)}.", InfoBarSeverity.Success);
-        }
-        catch (Exception ex)
-        {
-            ShowStatus($"Export failed: {ex.Message}", InfoBarSeverity.Error);
-        }
-    }
-
-    private void OnImport(object sender, RoutedEventArgs e)
-    {
-        var path = NativeFileDialog.ShowOpenFileDialog(ThisWindowHandle(), "Import WinTuner profile");
-        if (path is null)
-        {
-            return;
-        }
-
-        string json;
-        try
-        {
-            json = File.ReadAllText(path);
-        }
-        catch (Exception ex)
-        {
-            ShowStatus($"Could not read profile: {ex.Message}", InfoBarSeverity.Error);
-            return;
-        }
-
-        var states = WinTuner.Core.Profile.ProfileService.Parse(json);
-        if (states.Count == 0)
-        {
-            ShowStatus("That file is not a valid WinTuner profile.", InfoBarSeverity.Error);
-            return;
-        }
-
-        int applied = 0, failed = 0;
-        foreach (var tweak in Catalog.All)
-        {
-            try
-            {
-                _engine.ApplyOrRevert(tweak, states);
-                applied++;
-            }
-            catch (Exception)
-            {
-                failed++;
-            }
-        }
-
-        // Re-sync every card from the registry so the UI reflects the new state.
-        foreach (var list in _byCategory.Values)
-        {
-            foreach (var vm in list)
-            {
-                vm.Refresh();
-            }
-        }
-
-        ShowStatus(
-            failed == 0
-                ? $"Imported profile: {applied} tweaks set."
-                : $"Imported profile: {applied} set, {failed} skipped (needs administrator).",
-            failed == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning);
-    }
-
-    private void OnSnapshot(object sender, RoutedEventArgs e)
-    {
-        var path = NativeFileDialog.ShowSaveFileDialog(ThisWindowHandle(), "Save WinTuner snapshot", $"wintuner-snapshot-{DateTime.Now:yyyyMMdd-HHmm}");
-        if (path is null)
-        {
-            return;
-        }
-
-        try
-        {
-            // Capture the RAW registry state of every known tweak - including values
-            // that do not exist yet - so they can be restored exactly later, even
-            // after a reboot (unlike the in-memory session backup).
-            var json = WinTuner.Core.Profile.SnapshotService.Export(Catalog.All, _engine);
-            File.WriteAllText(path, json);
-            ShowStatus($"Snapshot of {Catalog.All.Count} tweak states saved to {Path.GetFileName(path)}.", InfoBarSeverity.Success);
-        }
-        catch (Exception ex)
-        {
-            ShowStatus($"Snapshot failed: {ex.Message}", InfoBarSeverity.Error);
-        }
-    }
-
-    private void OnRestoreSnapshot(object sender, RoutedEventArgs e)
-    {
-        var path = NativeFileDialog.ShowOpenFileDialog(ThisWindowHandle(), "Restore WinTuner snapshot");
-        if (path is null)
-        {
-            return;
-        }
-
-        string json;
-        try
-        {
-            json = File.ReadAllText(path);
-        }
-        catch (Exception ex)
-        {
-            ShowStatus($"Could not read snapshot: {ex.Message}", InfoBarSeverity.Error);
-            return;
-        }
-
-        var snapshot = WinTuner.Core.Profile.SnapshotService.Parse(json);
-        if (snapshot is null)
-        {
-            ShowStatus("That file is not a valid WinTuner snapshot.", InfoBarSeverity.Error);
-            return;
-        }
-
-        try
-        {
-            WinTuner.Core.Profile.SnapshotService.Restore(Catalog.All, snapshot, _engine);
-        }
-        catch (Exception ex)
-        {
-            ShowStatus($"Snapshot restore failed: {Friendly(ex)}", InfoBarSeverity.Error);
-            return;
-        }
-
-        // Re-sync every card from the registry so the UI reflects the restored state.
-        foreach (var list in _byCategory.Values)
-        {
-            foreach (var vm in list)
-            {
-                vm.Refresh();
-            }
-        }
-
-        ShowStatus($"Restored {snapshot.Count} tweaks to the snapshot state.", InfoBarSeverity.Success);
     }
 
     private static string Friendly(Exception ex)

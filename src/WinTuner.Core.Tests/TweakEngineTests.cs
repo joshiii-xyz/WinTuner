@@ -1,7 +1,6 @@
 using System.Linq;
 using Microsoft.Win32;
 using WinTuner.Core.Registry;
-using WinTuner.Core.Profile;
 using WinTuner.Core.Tweaks;
 using Xunit;
 
@@ -198,50 +197,6 @@ public class TweakEngineTests
     }
 
     [Fact]
-    public void Profile_ExportThenApply_RoundTripsState()
-    {
-        var fake = new FakeRegistryProvider();
-        var engine = new TweakEngine(fake);
-        var sample = Sample();
-        var other = new RegistryTweak
-        {
-            Id = "test.other",
-            Title = "Other",
-            Description = "Second tweak used to verify profile import touches only recorded entries.",
-            Category = TweakCategory.Privacy,
-            Hive = RegistryHive.CurrentUser,
-            SubKey = TestSubKey,
-            ValueName = "OtherFlag",
-            ValueKind = RegistryValueKind.DWord,
-            EnabledValue = 1,
-            DisabledValue = 0,
-            DefaultValue = 0,
-            AbsentState = TweakState.Disabled,
-        };
-
-        // Enable only the sample tweak, then export the live state.
-        engine.Apply(sample);
-        engine.Revert(other);
-        var json = ProfileService.Export(new[] { sample, other }, engine);
-
-        // Change both states on the fake store, then replay the profile.
-        engine.Revert(sample);
-        engine.Apply(other);
-        var states = ProfileService.Parse(json);
-        ProfileService.Apply(new[] { sample, other }, states, engine);
-
-        Assert.Equal(TweakState.Enabled, engine.GetState(sample));
-        Assert.Equal(TweakState.Disabled, engine.GetState(other));
-    }
-
-    [Fact]
-    public void Profile_Parse_ReturnsEmpty_OnInvalidJson()
-    {
-        var states = ProfileService.Parse("this is not json");
-        Assert.Empty(states);
-    }
-
-    [Fact]
     public void Catalog_AllTweaks_HaveCitableReference_WithHiveToken()
     {
         foreach (var t in Catalog.All)
@@ -329,67 +284,4 @@ public class TweakEngineTests
         Assert.Equal(0, fake.GetValue(RegistryHive.CurrentUser, TestSubKey, "Flag"));
     }
 
-    [Fact]
-    public void CaptureRaw_AndWriteValue_RoundTrips_DWord()
-    {
-        var fake = new FakeRegistryProvider();
-        fake.SetValue(RegistryHive.CurrentUser, TestSubKey, "Flag", 7, RegistryValueKind.DWord);
-        var engine = new TweakEngine(fake);
-        var tweak = Sample();
-
-        var (value, kind) = engine.CaptureRaw(tweak);
-        Assert.Equal("7", value);
-        Assert.Equal("DWord", kind);
-
-        // Change the live value, then restore from the captured raw.
-        fake.SetValue(RegistryHive.CurrentUser, TestSubKey, "Flag", 999, RegistryValueKind.DWord);
-        engine.WriteValue(tweak, value, kind);
-        Assert.Equal(7, fake.GetValue(RegistryHive.CurrentUser, TestSubKey, "Flag"));
-    }
-
-    [Fact]
-    public void WriteValue_Deletes_WhenCapturedValueWasAbsent()
-    {
-        var fake = new FakeRegistryProvider();
-        fake.SetValue(RegistryHive.CurrentUser, TestSubKey, "Flag", 1, RegistryValueKind.DWord);
-        var engine = new TweakEngine(fake);
-        var tweak = Sample();
-
-        // A snapshot that recorded "value did not exist" should delete the key on restore.
-        engine.WriteValue(tweak, null, "None");
-        Assert.True(fake.GetValue(RegistryHive.CurrentUser, TestSubKey, "Flag") is null);
-    }
-
-    [Fact]
-    public void Snapshot_Restore_ReturnsTweaksToCapturedState()
-    {
-        var fake = new FakeRegistryProvider();
-        var engine = new TweakEngine(fake);
-        var a = Sample();
-        var b = Sample() with { Id = "test.other", ValueName = "Other" };
-        var tweaks = new[] { a, b };
-
-        // Baseline: a=1, b=1.
-        fake.SetValue(RegistryHive.CurrentUser, TestSubKey, "Flag", 1, RegistryValueKind.DWord);
-        fake.SetValue(RegistryHive.CurrentUser, TestSubKey, "Other", 1, RegistryValueKind.DWord);
-
-        var snapshotJson = WinTuner.Core.Profile.SnapshotService.Export(tweaks, engine);
-
-        // Mutate both, then restore from the snapshot.
-        fake.SetValue(RegistryHive.CurrentUser, TestSubKey, "Flag", 0, RegistryValueKind.DWord);
-        fake.SetValue(RegistryHive.CurrentUser, TestSubKey, "Other", 0, RegistryValueKind.DWord);
-
-        var snapshot = WinTuner.Core.Profile.SnapshotService.Parse(snapshotJson);
-        Assert.NotNull(snapshot);
-        WinTuner.Core.Profile.SnapshotService.Restore(tweaks, snapshot!, engine);
-
-        Assert.Equal(1, fake.GetValue(RegistryHive.CurrentUser, TestSubKey, "Flag"));
-        Assert.Equal(1, fake.GetValue(RegistryHive.CurrentUser, TestSubKey, "Other"));
-    }
-
-    [Fact]
-    public void Snapshot_Parse_ReturnsNull_ForGarbage()
-    {
-        Assert.Null(WinTuner.Core.Profile.SnapshotService.Parse("not json at all {{{"));
-    }
 }

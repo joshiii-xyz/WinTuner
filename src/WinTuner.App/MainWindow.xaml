@@ -12,39 +12,6 @@
                         OpenPaneLength="248"
                         PaneTitle="WinTuner"
                         SelectionChanged="OnNavSelectionChanged">
-
-            <NavigationView.PaneFooter>
-                <StackPanel Padding="12,10" Spacing="2">
-                    <Border Height="1"
-                            Background="{ThemeResource DividerStrokeColorDefaultBrush}"
-                            Margin="8,2,8,8" />
-                    <Button x:Name="ImportButton" Style="{StaticResource FlatNavButton}" Click="OnImport">
-                        <StackPanel Orientation="Horizontal" Spacing="12">
-                            <FontIcon Glyph="&#xE8B5;" FontSize="16" />
-                            <TextBlock Text="Import profile" />
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="ExportButton" Style="{StaticResource FlatNavButton}" Click="OnExport">
-                        <StackPanel Orientation="Horizontal" Spacing="12">
-                            <FontIcon Glyph="&#xEDE1;" FontSize="16" />
-                            <TextBlock Text="Export profile" />
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="SnapshotButton" Style="{StaticResource FlatNavButton}" Click="OnSnapshot">
-                        <StackPanel Orientation="Horizontal" Spacing="12">
-                            <FontIcon Glyph="&#xE722;" FontSize="16" />
-                            <TextBlock Text="Snapshot" />
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="RestoreButton" Style="{StaticResource FlatNavButton}" Click="OnRestoreSnapshot">
-                        <StackPanel Orientation="Horizontal" Spacing="12">
-                            <FontIcon Glyph="&#xE777;" FontSize="16" />
-                            <TextBlock Text="Restore snapshot" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </NavigationView.PaneFooter>
-
             <Grid Padding="28,18,28,26">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

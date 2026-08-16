@@ -91,50 +91,6 @@ public sealed class TweakEngine
         return TweakState.Unknown;
     }
 
-    /// <summary>
-    /// Reads the raw (value, kind) pair currently in the registry for a tweak. Used by
-    /// snapshot/backup so the exact pre-change state can be restored later (even after a reboot).
-    /// Returns Value = null and Kind = None when the value does not exist.
-    /// </summary>
-    public (string? Value, string Kind) CaptureRaw(RegistryTweak tweak)
-    {
-        var value = _registry.GetValue(tweak.Hive, tweak.SubKey, tweak.ValueName);
-        var kind = _registry.GetValueKind(tweak.Hive, tweak.SubKey, tweak.ValueName);
-        return (value?.ToString(), (kind?.ToString()) ?? "None");
-    }
-
-    /// <summary>
-    /// Writes a previously captured raw value back to the registry. A null value deletes the
-    /// key (restoring the "value did not exist" state). Used by snapshot restore.
-    /// </summary>
-    public void WriteValue(RegistryTweak tweak, string? rawValue, string kindName)
-    {
-        var kind = Enum.TryParse<RegistryValueKind>(kindName, out var parsed)
-            ? parsed
-            : RegistryValueKind.String;
-
-        object? value = rawValue is null ? null : ConvertRaw(kind, rawValue);
-
-        if (value is null)
-        {
-            _registry.DeleteValue(tweak.Hive, tweak.SubKey, tweak.ValueName);
-        }
-        else
-        {
-            _registry.SetValue(tweak.Hive, tweak.SubKey, tweak.ValueName, value, kind);
-        }
-    }
-
-    private static object? ConvertRaw(RegistryValueKind kind, string raw)
-    {
-        return kind switch
-        {
-            RegistryValueKind.DWord => int.TryParse(raw, out var i) ? i : raw,
-            RegistryValueKind.QWord => long.TryParse(raw, out var l) ? l : raw,
-            _ => raw, // String / ExpandString / MultiString / others stored as text
-        };
-    }
-
     /// <summary>Reads the live state of every supplied tweak. Used by System Scan.</summary>
     public IReadOnlyDictionary<string, TweakState> ScanAll(IEnumerable<RegistryTweak> tweaks)
     {
@@ -145,27 +101,6 @@ public sealed class TweakEngine
         }
 
         return result;
-    }
-
-    /// <summary>
-    /// Applies or reverts a tweak based on a desired state string ("Enabled"/"Disabled").
-    /// Used by profile import so a captured configuration can be replayed.
-    /// </summary>
-    public void ApplyOrRevert(RegistryTweak tweak, IReadOnlyDictionary<string, string> states)
-    {
-        if (!states.TryGetValue(tweak.Id, out var state))
-        {
-            return;
-        }
-
-        if (state == nameof(TweakState.Enabled))
-        {
-            Apply(tweak);
-        }
-        else
-        {
-            Revert(tweak);
-        }
     }
 
     /// <summary>

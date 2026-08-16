@@ -253,6 +253,30 @@ public class TweakEngineTests
     }
 
     [Fact]
+    public void Catalog_AllTweaks_ValuesMatchDeclaredKind()
+    {
+        foreach (var t in Catalog.All)
+        {
+            Assert.True(ValueMatchesKind(t.EnabledValue, t.ValueKind), $"Tweak {t.Id} EnabledValue does not match its ValueKind ({t.ValueKind}).");
+            Assert.True(ValueMatchesKind(t.DisabledValue, t.ValueKind), $"Tweak {t.Id} DisabledValue does not match its ValueKind ({t.ValueKind}).");
+            if (t.DefaultValue is not null)
+            {
+                Assert.True(ValueMatchesKind(t.DefaultValue, t.ValueKind), $"Tweak {t.Id} DefaultValue does not match its ValueKind ({t.ValueKind}).");
+            }
+        }
+    }
+
+    private static bool ValueMatchesKind(object? value, RegistryValueKind kind) => kind switch
+    {
+        RegistryValueKind.DWord => value is int,
+        RegistryValueKind.QWord => value is long,
+        RegistryValueKind.String or RegistryValueKind.ExpandString => value is string,
+        RegistryValueKind.MultiString => value is string[],
+        RegistryValueKind.Binary => value is byte[],
+        _ => value is not null,
+    };
+
+    [Fact]
     public void Catalog_AllTweaks_HaveUniqueIds_AndReasonableCount()
     {
         var ids = Catalog.All.Select(t => t.Id).ToList();

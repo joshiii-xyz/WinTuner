@@ -30,7 +30,7 @@ public static partial class Catalog
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Tcpip6\\Parameters!DisabledComponents (0xFF = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters!DisabledComponents (0xFF = off)",
         },
         new()
         {
@@ -47,7 +47,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\NetBT\\Parameters!EnableLMHOSTS (0 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\NetBT\\Parameters!EnableLMHOSTS (0 = off)",
         },
         new()
         {
@@ -65,7 +65,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\NetBT\\Parameters!NetbiosOptions (2 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\NetBT\\Parameters!NetbiosOptions (2 = disabled)",
         },
         new()
         {
@@ -83,7 +83,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\DeliveryOptimization\\Config!DODownloadMode (0 = off)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Config!DODownloadMode (0 = off)",
         },
         new()
         {
@@ -102,7 +102,7 @@ public static partial class Catalog
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\LanmanServer\\Parameters!SMB1 (0 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\LanmanServer\\Parameters!SMB1 (0 = disabled)",
         },
         new()
         {
@@ -121,7 +121,7 @@ public static partial class Catalog
         DefaultValue = 10,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\SystemProfile!NetworkThrottlingIndex (0xFFFFFFFF = off)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile!NetworkThrottlingIndex (0xFFFFFFFF = off)",
         },
         new()
         {
@@ -140,7 +140,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\NlaSvc\\Parameters\\Internet!EnableActiveProbing (0 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\NlaSvc\\Parameters\\Internet!EnableActiveProbing (0 = off)",
         },
         new()
         {
@@ -160,7 +160,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\SharedAccess!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess!Start (4 = disabled)",
         },
         new()
         {
@@ -178,7 +178,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Internet Settings!AutoDetect (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings!AutoDetect (0 = off)",
         },
         new()
         {
@@ -195,7 +195,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\lltdsvc!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\lltdsvc!Start (4 = disabled)",
         },
         new()
         {
@@ -212,7 +212,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\FDResPub!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\FDResPub!Start (4 = disabled)",
         },
         new()
         {
@@ -229,7 +229,7 @@ public static partial class Catalog
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Tcpip\\Parameters!EnableRSS (0 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters!EnableRSS (0 = off)",
         },
         new()
         {
@@ -246,7 +246,7 @@ public static partial class Catalog
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Tcpip\\Parameters!DisableMediaSense (1 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters!DisableMediaSense (1 = off)",
         },
         new()
         {
@@ -263,7 +263,7 @@ public static partial class Catalog
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Tcpip\\Parameters!DisableTaskOffload (1 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters!DisableTaskOffload (1 = off)",
         },
         new()
         {
@@ -280,7 +280,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\iphlpsvc!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\iphlpsvc!Start (4 = disabled)",
         },
         new()
         {
@@ -296,7 +296,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\NetBT\\Parameters!NodeType (2 = p2p)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\NetBT\\Parameters!NodeType (2 = p2p)",
         },
         new()
         {
@@ -312,7 +312,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\iphlpsvc\\Teredo!Type (0 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\iphlpsvc\\Teredo!State (0 = disabled)",
         },
         new()
         {
@@ -328,7 +328,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\iphlpsvc\\6to4!State (0 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\iphlpsvc\\6to4!State (0 = disabled)",
         },
     };
 }

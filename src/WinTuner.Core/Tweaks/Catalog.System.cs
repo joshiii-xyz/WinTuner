@@ -29,7 +29,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\WindowsCopilot!TurnOffWindowsCopilot (policy)",
+        Reference = "HKLM\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot!TurnOffWindowsCopilot (policy)",
         },
         new()
         {
@@ -47,7 +47,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!DisallowShaking (1 = disabled)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!DisallowShaking (1 = disabled)",
         },
         new()
         {
@@ -65,7 +65,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Search!BingSearchEnabled (0 = local only)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search!BingSearchEnabled (0 = local only)",
         },
         new()
         {
@@ -83,7 +83,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\EdgeUI!AllowEdgeSwipe (policy; 0 = disabled)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\EdgeUI!AllowEdgeSwipe (policy; 0 = disabled)",
         },
         new()
         {
@@ -101,7 +101,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Personalization!NoLockScreen (policy; 1 = disabled)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization!NoLockScreen (policy; 1 = disabled)",
         },
         new()
         {
@@ -119,7 +119,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\CloudContent!DisableWindowsConsumerFeatures (policy; 1 = off)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent!DisableWindowsConsumerFeatures (policy; 1 = off)",
         },
         new()
         {
@@ -137,7 +137,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\CloudContent!DisableSoftLanding (policy; 1 = off)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent!DisableSoftLanding (policy; 1 = off)",
         },
         new()
         {
@@ -155,7 +155,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Windows Search!AllowCortana (policy; 0 = disabled)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search!AllowCortana (policy; 0 = disabled)",
         },
         new()
         {
@@ -173,7 +173,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\WindowsUpdate\\AU!NoAutoRebootWithLoggedOnUsers (policy; 1 = off)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU!NoAutoRebootWithLoggedOnUsers (policy; 1 = off)",
         },
         new()
         {
@@ -190,7 +190,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\PushNotifications!ToastEnabled (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications!ToastEnabled (0 = off)",
         },
         new()
         {
@@ -208,7 +208,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\WindowsInkWorkspace!AllowWindowsInkWorkspace (policy; 0 = off)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\WindowsInkWorkspace!AllowWindowsInkWorkspace (policy; 0 = off)",
         },
         new()
         {
@@ -227,7 +227,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Schedule\\Maintenance!MaintenanceDisabled (1 = off)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\Maintenance!MaintenanceDisabled (1 = off)",
         },
         new()
         {
@@ -244,7 +244,7 @@ public static partial class Catalog
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Control\\Power!HiberbootEnabled (0 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power!HiberbootEnabled (0 = off)",
         },
         new()
         {
@@ -260,7 +260,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\WindowsUpdate!ExcludeWUDriversInQualityUpdate (policy; 1 = exclude)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate!ExcludeWUDriversInQualityUpdate (policy; 1 = exclude)",
         },
         new()
         {
@@ -276,7 +276,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Policies\\System!DisableStartupSound (policy; 1 = off)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System!DisableStartupSound (policy; 1 = off)",
         },
         new()
         {
@@ -292,7 +292,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Policies\\System!HideFastUserSwitching (policy; 1 = off)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System!HideFastUserSwitching (policy; 1 = off)",
         },
         new()
         {
@@ -308,7 +308,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\WindowsStore!AutoDownload (policy; 2 = never)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\WindowsStore!AutoDownload (policy; 2 = never)",
         },
         new()
         {
@@ -324,7 +324,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Windows Search!AllowCortanaAboveLock (policy; 0 = off)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search!AllowCortanaAboveLock (policy; 0 = off)",
         },
         new()
         {
@@ -340,7 +340,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\FileSystem!LongPathsEnabled (1 = enabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem!LongPathsEnabled (1 = enabled)",
         },
         new()
         {
@@ -356,7 +356,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\System!EnableSmartScreen (policy; 0 = off)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System!EnableSmartScreen (policy; 0 = off)",
         },
         new()
         {
@@ -372,7 +372,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\StoragePolicies!01 (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\StoragePolicies!01 (0 = off)",
         },
         new()
         {
@@ -388,7 +388,7 @@ public static partial class Catalog
         DisabledValue = 3600,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\PowerSettings\\...\\29f6c1db!ACSettingIndex (0 = never)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerSettings\\238C9FA8-0AAD-41ED-83F4-97BE242C8F20\\29f6c1db-86da-48c5-9fdb-f2b67b1f44da!ACSettingIndex (0 = never)",
         },
     };
 }

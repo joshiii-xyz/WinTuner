@@ -48,7 +48,7 @@ public static partial class Catalog
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\GraphicsDrivers!HwSchMode (2 = on, 1 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers!HwSchMode (2 = on, 1 = off)",
         },
         new()
         {
@@ -66,7 +66,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\GameDVR!AllowGameDVR (0 = off, policy)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR!AllowGameDVR (0 = off, policy)",
         },
         new()
         {
@@ -138,7 +138,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\GameDVR!AppCaptureEnabled (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR!AppCaptureEnabled (0 = off)",
         },
         new()
         {
@@ -203,7 +203,7 @@ public static partial class Catalog
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\GraphicsDrivers!HwSchMode (1 = software, 2 = hardware)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers!HwSchMode (1 = software, 2 = hardware)",
         },
         new()
         {
@@ -220,7 +220,7 @@ public static partial class Catalog
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\GraphicsDrivers!DisableDirectFlip (1 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers!DisableDirectFlip (1 = off)",
         },
         new()
         {
@@ -253,7 +253,7 @@ public static partial class Catalog
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\GraphicsDrivers!HwSchMode (1 = software)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers!HwSchMode (1 = software)",
         },
         new()
         {
@@ -270,7 +270,7 @@ public static partial class Catalog
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\GraphicsDrivers!FlipBuffers (2 = triple)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers!FlipBuffers (2 = triple)",
         },
     };
 }

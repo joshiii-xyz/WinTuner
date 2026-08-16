@@ -29,7 +29,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!HideFileExt (0 = show, 1 = hide)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!HideFileExt (0 = show, 1 = hide)",
         },
         new()
         {
@@ -47,7 +47,7 @@ public static partial class Catalog
         DisabledValue = 2,
         DefaultValue = 2,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!Hidden (1 = show, 2 = hide)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!Hidden (1 = show, 2 = hide)",
         },
         new()
         {
@@ -64,7 +64,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!HideDrivesWithNoMedia",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!HideDrivesWithNoMedia",
         },
         new()
         {
@@ -82,7 +82,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!ShowSuperHidden (1 = show)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!ShowSuperHidden (1 = show)",
         },
         new()
         {
@@ -100,7 +100,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!IconsOnly (1 = icons only)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!IconsOnly (1 = icons only)",
         },
         new()
         {
@@ -118,7 +118,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!LaunchTo (1 = This PC, 0 = Quick Access)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!LaunchTo (1 = This PC, 0 = Quick Access)",
         },
         new()
         {
@@ -136,7 +136,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer!ShowRecent (0 = hidden, 1 = shown)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer!ShowRecent (0 = hidden, 1 = shown)",
         },
         new()
         {
@@ -154,7 +154,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!ShowStatusBar (1 = shown)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!ShowStatusBar (1 = shown)",
         },
         new()
         {
@@ -172,7 +172,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!SharingWizardOn (0 = classic)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!SharingWizardOn (0 = classic)",
         },
         new()
         {
@@ -189,7 +189,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!AutoCheckSelect (1 = on)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!AutoCheckSelect (1 = on)",
         },
         new()
         {
@@ -207,7 +207,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!NavPaneExpandToCurrentFolder (1 = on)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!NavPaneExpandToCurrentFolder (1 = on)",
         },
         new()
         {
@@ -225,7 +225,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!ShowFrequent (0 = hidden, 1 = shown)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!ShowFrequent (0 = hidden, 1 = shown)",
         },
         new()
         {
@@ -243,7 +243,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!ShowSyncProviderNotifications (0 = hidden)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!ShowSyncProviderNotifications (0 = hidden)",
         },
         new()
         {
@@ -259,7 +259,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!SeparateProcess (1 = separate)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!SeparateProcess (1 = separate)",
         },
         new()
         {
@@ -275,7 +275,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!AlwaysShowMenu (1 = shown)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!AlwaysShowMenu (1 = shown)",
         },
         new()
         {
@@ -291,7 +291,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!ShowFavorites (0 = hidden)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!ShowFavorites (0 = hidden)",
         },
         new()
         {
@@ -307,7 +307,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!SnapAssist (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!SnapAssist (0 = off)",
         },
         new()
         {
@@ -323,7 +323,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!ShowEncrypt (1 = green)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!ShowEncrypt (1 = green)",
         },
         new()
         {
@@ -339,7 +339,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer!EnableAutoTray (0 = always show)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer!EnableAutoTray (0 = always show)",
         },
         new()
         {
@@ -355,7 +355,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!DisableThumbsDB (1 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!DisableThumbsDB (1 = off)",
         },
         new()
         {
@@ -371,7 +371,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!ShowCompColor (1 = blue)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!ShowCompColor (1 = blue)",
         },
         new()
         {
@@ -387,7 +387,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Policies\\Explorer!NoResolveTrack (1 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer!NoResolveTrack (1 = off)",
         },
         new()
         {
@@ -403,7 +403,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!NavPaneShowAllFolders (1 = on)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!NavPaneShowAllFolders (1 = on)",
         },
         new()
         {
@@ -419,7 +419,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Policies\\Explorer!ClearRecentDocsOnExit (1 = on)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer!ClearRecentDocsOnExit (1 = on)",
         },
         new()
         {
@@ -435,7 +435,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!ShowNewAppSuggestedToast (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!ShowNewAppSuggestedToast (0 = off)",
         },
     };
 }

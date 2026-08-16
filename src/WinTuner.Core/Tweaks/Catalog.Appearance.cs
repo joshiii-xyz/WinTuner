@@ -29,7 +29,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Personalize!AppsUseLightTheme (0 = dark, 1 = light)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize!AppsUseLightTheme (0 = dark, 1 = light)",
         },
         new()
         {
@@ -47,7 +47,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Personalize!SystemUsesLightTheme (0 = dark, 1 = light)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize!SystemUsesLightTheme (0 = dark, 1 = light)",
         },
         new()
         {
@@ -82,7 +82,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Advanced!TaskbarAl (0 = left, 1 = center)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!TaskbarAl (0 = left, 1 = center)",
         },
         new()
         {
@@ -99,7 +99,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Advanced!TaskbarSmallIcons (1 = small)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!TaskbarSmallIcons (1 = small)",
         },
         new()
         {
@@ -117,7 +117,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Search!SearchboxTaskbarMode (0 = hidden, 1 = icon, 2 = box)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search!SearchboxTaskbarMode (0 = hidden, 1 = icon, 2 = box)",
         },
         new()
         {
@@ -135,7 +135,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!TaskbarDa (0 = hidden, 1 = shown)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!TaskbarDa (0 = hidden, 1 = shown)",
         },
         new()
         {
@@ -152,7 +152,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Windows Chat!ChatIcon (policy; 0 = hidden)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Chat!ChatIcon (policy; 0 = hidden)",
         },
         new()
         {
@@ -170,7 +170,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!EnablePeek (1 = on)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!EnablePeek (1 = on)",
         },
         new()
         {
@@ -188,7 +188,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!ShowSecondsInSystemClock (1 = on)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!ShowSecondsInSystemClock (1 = on)",
         },
         new()
         {
@@ -224,7 +224,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\ImmersiveShell!TabletMode (0 = desktop)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ImmersiveShell!TabletMode (0 = desktop)",
         },
         new()
         {
@@ -242,7 +242,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!TaskbarGlomLevel (2 = never combine)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!TaskbarGlomLevel (2 = never combine)",
         },
         new()
         {
@@ -294,7 +294,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!TaskbarBadges (0 = hidden)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!TaskbarBadges (0 = hidden)",
         },
         new()
         {
@@ -310,7 +310,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Personalize!ColorPrevalence (1 = accent on)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize!ColorPrevalence (1 = accent on)",
         },
         new()
         {
@@ -326,7 +326,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!ShowTaskViewButton (0 = hidden)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!ShowTaskViewButton (0 = hidden)",
         },
         new()
         {
@@ -342,7 +342,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!MMTaskbarEnabled (1 = all displays)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!MMTaskbarEnabled (1 = all displays)",
         },
         new()
         {
@@ -358,7 +358,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!TaskbarGlomLevel (1 = when full)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!TaskbarGlomLevel (1 = when full)",
         },
         new()
         {
@@ -374,7 +374,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!Start_TrackProgs (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!Start_TrackProgs (0 = off)",
         },
         new()
         {
@@ -390,7 +390,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Personalize!SystemUsesLightTheme (0 = light text)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize!SystemUsesLightTheme (0 = light text)",
         },
     };
 }

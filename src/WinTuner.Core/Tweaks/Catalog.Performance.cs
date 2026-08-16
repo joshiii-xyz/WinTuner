@@ -30,7 +30,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Personalize!EnableTransparency (0 = off, 1 = on)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize!EnableTransparency (0 = off, 1 = on)",
         },
         new()
         {
@@ -48,7 +48,7 @@ public static partial class Catalog
         DisabledValue = 20000,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Serialize!StartupDelayInMSec (0 = no delay)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Serialize!StartupDelayInMSec (0 = no delay)",
         },
         new()
         {
@@ -86,7 +86,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\SysMain!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SysMain!Start (4 = disabled)",
         },
         new()
         {
@@ -105,7 +105,7 @@ public static partial class Catalog
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Control\\Power!HibernateEnabled (0 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power!HibernateEnabled (0 = off)",
         },
         new()
         {
@@ -123,7 +123,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\BackgroundAccessApplications!GlobalUserDisabled (1 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications!GlobalUserDisabled (1 = off)",
         },
         new()
         {
@@ -141,7 +141,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\VisualEffects!VisualFXSetting (2 = best perf)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects!VisualFXSetting (2 = best perf)",
         },
         new()
         {
@@ -178,7 +178,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\Ndu!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Ndu!Start (4 = disabled)",
         },
         new()
         {
@@ -196,7 +196,7 @@ public static partial class Catalog
         DisabledValue = 2,
         DefaultValue = 2,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\PriorityControl!Win32PrioritySeparation (38 = foreground)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\PriorityControl!Win32PrioritySeparation (38 = foreground)",
         },
         new()
         {
@@ -215,7 +215,7 @@ public static partial class Catalog
         DefaultValue = 3,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\PrefetchParameters!EnablePrefetcher (0 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management\\PrefetchParameters!EnablePrefetcher (0 = off)",
         },
         new()
         {
@@ -234,7 +234,7 @@ public static partial class Catalog
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Memory Management!DisablePagingExecutive (1 = keep in RAM)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management!DisablePagingExecutive (1 = keep in RAM)",
         },
         new()
         {
@@ -252,7 +252,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\FileSystem!NtfsDisableLastAccessUpdate (1 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem!NtfsDisableLastAccessUpdate (1 = off)",
         },
         new()
         {
@@ -270,7 +270,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\FileSystem!NtfsDisable8dot3NameCreation (1 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\FileSystem!NtfsDisable8dot3NameCreation (1 = off)",
         },
         new()
         {
@@ -287,7 +287,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\WSearch!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\WSearch!Start (4 = disabled)",
         },
         new()
         {
@@ -303,7 +303,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\SystemRestore!DisableSR (1 = off)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\SystemRestore!DisableSR (1 = off)",
         },
         new()
         {
@@ -320,7 +320,7 @@ public static partial class Catalog
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Memory Management!LargeSystemCache (1 = on)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management!LargeSystemCache (1 = on)",
         },
         new()
         {
@@ -336,7 +336,7 @@ public static partial class Catalog
         DisabledValue = 5,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\PowerSettings\\...\\893dee8e!ACSettingIndex (100 = no throttle)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Power\\PowerSettings\\54533251-82be-4824-96c1-47ec7da1bd80\\893dee8e-2bef-41e0-89c6-b55d0929964c!ACSettingIndex (100 = no throttle)",
         },
         new()
         {
@@ -353,7 +353,7 @@ public static partial class Catalog
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\kernel!DynamicTick (0 = fixed)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel!DynamicTick (0 = fixed)",
         },
         new()
         {
@@ -369,7 +369,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\GlobalLogger!Start (1 = on)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\WMI\\GlobalLogger!Start (1 = on)",
         },
     };
 }

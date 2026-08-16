@@ -29,7 +29,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\AdvertisingInfo!Enabled",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo!Enabled",
         },
         new()
         {
@@ -47,7 +47,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Privacy!TailoredExperiencesWithDiagnosticDataEnabled",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Privacy!TailoredExperiencesWithDiagnosticDataEnabled",
         },
         new()
         {
@@ -65,7 +65,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\ContentDeliveryManager!SubscribedContent-338388 (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager!SubscribedContent-338388 (0 = off)",
         },
         new()
         {
@@ -83,7 +83,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\ContentDeliveryManager!SoftLandingEnabled (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager!SoftLandingEnabled (0 = off)",
         },
         new()
         {
@@ -101,7 +101,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\DataCollection!DoNotShowFeedbackNotifications (policy)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection!DoNotShowFeedbackNotifications (policy)",
         },
         new()
         {
@@ -119,7 +119,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\ActivityPicker!EnableActivityFeed (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ActivityPicker!EnableActivityFeed (0 = off)",
         },
         new()
         {
@@ -137,7 +137,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Sensor Permissions\\Location!EnableLocation (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Sensor Permissions\\Location!EnableLocation (0 = off)",
         },
         new()
         {
@@ -155,7 +155,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Windows Error Reporting!Disabled (1 = off)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\Windows\\Windows Error Reporting!Disabled (1 = off)",
         },
         new()
         {
@@ -173,7 +173,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\ContentDeliveryManager!SubscribedContent-338893 (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager!SubscribedContent-338893 (0 = off)",
         },
         new()
         {
@@ -191,7 +191,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Clipboard!EnableClipboardHistory (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Clipboard!EnableClipboardHistory (0 = off)",
         },
         new()
         {
@@ -209,7 +209,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Clipboard!EnableCloudClipboard (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Clipboard!EnableCloudClipboard (0 = off)",
         },
         new()
         {
@@ -228,7 +228,7 @@ public static partial class Catalog
         DisabledValue = 3,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\DataCollection!AllowTelemetry (policy; 0 = Security)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection!AllowTelemetry (policy; 0 = Security)",
         },
         new()
         {
@@ -244,7 +244,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!Start_TrackProgs (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!Start_TrackProgs (0 = off)",
         },
         new()
         {
@@ -260,7 +260,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Explorer\\Advanced!Start_TrackDocs (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced!Start_TrackDocs (0 = off)",
         },
         new()
         {
@@ -277,7 +277,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\DiagTrack!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\DiagTrack!Start (4 = disabled)",
         },
         new()
         {
@@ -293,7 +293,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Search!CloudSearchEnabled (0 = local only)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search!CloudSearchEnabled (0 = local only)",
         },
         new()
         {
@@ -309,7 +309,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\ContentDeliveryManager!SubscribedContent-338387 (0 = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager!SubscribedContent-338387 (0 = off)",
         },
         new()
         {
@@ -325,7 +325,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\CloudContent!DisableWindowsSpotlightFeatures (policy; 1 = off)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent!DisableWindowsSpotlightFeatures (policy; 1 = off)",
         },
         new()
         {
@@ -341,7 +341,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\SQMClient\\Windows!CEIPEnable (0 = off)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\SQMClient\\Windows!CEIPEnable (0 = off)",
         },
         new()
         {
@@ -357,7 +357,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\AppPrivacy!LetAppsGetDiagnosticInfo (policy; 2 = never)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy!LetAppsGetDiagnosticInfo (policy; 2 = never)",
         },
         new()
         {
@@ -373,7 +373,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\AdvertisingInfo!DisabledByGroupPolicy (policy; 1 = off)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\AdvertisingInfo!DisabledByGroupPolicy (policy; 1 = off)",
         },
     };
 }

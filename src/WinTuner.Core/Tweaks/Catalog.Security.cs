@@ -30,7 +30,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\System!EnableSmartScreen (policy; absent = on)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System!EnableSmartScreen (policy; absent = on)",
         },
         new()
         {
@@ -48,7 +48,7 @@ public static partial class Catalog
         DisabledValue = 145,
         DefaultValue = 145,
         AbsentState = TweakState.Disabled,
-        Reference = "HKCU\\...\\Policies\\Explorer!NoDriveTypeAutoRun (0xFF = off)",
+        Reference = "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer!NoDriveTypeAutoRun (0xFF = off)",
         },
         new()
         {
@@ -66,7 +66,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Lsa!AllowInsecureGuestAuth (0 = blocked)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa!AllowInsecureGuestAuth (0 = blocked)",
         },
         new()
         {
@@ -85,7 +85,7 @@ public static partial class Catalog
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Memory Management!ClearPageFileAtShutdown (1 = wipe)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management!ClearPageFileAtShutdown (1 = wipe)",
         },
         new()
         {
@@ -104,7 +104,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\RemoteRegistry!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\RemoteRegistry!Start (4 = disabled)",
         },
         new()
         {
@@ -123,7 +123,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\upnphost!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\upnphost!Start (4 = disabled)",
         },
         new()
         {
@@ -141,7 +141,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Dnscache\\Parameters!EnableLLMNR (0 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Dnscache\\Parameters!EnableLLMNR (0 = off)",
         },
         new()
         {
@@ -160,7 +160,7 @@ public static partial class Catalog
         DefaultValue = 2,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Memory Management!NoExecute (3 = Always On)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management!NoExecute (3 = Always On)",
         },
         new()
         {
@@ -178,7 +178,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Remote Assistance!fAllowToGetHelp (0 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Remote Assistance!fAllowToGetHelp (0 = disabled)",
         },
         new()
         {
@@ -196,7 +196,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Lsa!RestrictAnonymous (1 = restricted)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa!RestrictAnonymous (1 = restricted)",
         },
         new()
         {
@@ -216,7 +216,7 @@ public static partial class Catalog
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Terminal Server!fDenyTSConnections (1 = denied)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server!fDenyTSConnections (1 = denied)",
         },
         new()
         {
@@ -234,7 +234,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Winlogon!DisableCAD (0 = required)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon!DisableCAD (0 = required)",
         },
         new()
         {
@@ -252,7 +252,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Windows Script Host\\Settings!Enabled (0 = off)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\Windows Script Host\\Settings!Enabled (0 = off)",
         },
         new()
         {
@@ -270,7 +270,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Terminal Services!DisablePasswordSaving (policy; 1 = off)",
+        Reference = "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Terminal Services!DisablePasswordSaving (policy; 1 = off)",
         },
         new()
         {
@@ -288,7 +288,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Policies\\System!PromptOnSecureDesktop (1 = secure)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System!PromptOnSecureDesktop (1 = secure)",
         },
         new()
         {
@@ -305,7 +305,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\SSDPSRV!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\SSDPSRV!Start (4 = disabled)",
         },
         new()
         {
@@ -321,7 +321,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Control\\Lsa!RestrictAnonymousSam (1 = restricted)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa!RestrictAnonymousSam (1 = restricted)",
         },
         new()
         {
@@ -337,7 +337,7 @@ public static partial class Catalog
         DisabledValue = 1,
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\kernel!DisableExceptionChainValidation (0 = SEHOP on)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\kernel!DisableExceptionChainValidation (0 = SEHOP on)",
         },
         new()
         {
@@ -353,7 +353,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Policies\\System!DontDisplayLastUserName (policy)",
+        Reference = "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System!DontDisplayLastUserName (policy)",
         },
         new()
         {
@@ -370,7 +370,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Services\\Spooler!Start (4 = disabled)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Spooler!Start (4 = disabled)",
         },
         new()
         {
@@ -387,7 +387,7 @@ public static partial class Catalog
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\WDigest!UseLogonCredential (0 = secure)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\WDigest!UseLogonCredential (0 = secure)",
         },
         new()
         {
@@ -403,7 +403,7 @@ public static partial class Catalog
         DisabledValue = 0,
         DefaultValue = 1,
         AbsentState = TweakState.Disabled,
-        Reference = "HKLM\\...\\Lsa!RestrictNullSessAccess (1 = restricted)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa!RestrictNullSessAccess (1 = restricted)",
         },
         new()
         {
@@ -420,7 +420,7 @@ public static partial class Catalog
         DefaultValue = 3,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Lsa!LmCompatibilityLevel (5 = NTLMv2 only)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa!LmCompatibilityLevel (5 = NTLMv2 only)",
         },
         new()
         {
@@ -437,7 +437,7 @@ public static partial class Catalog
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\FIPSAlgorithmPolicy!Enabled (1 = FIPS on)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\FIPSAlgorithmPolicy!Enabled (1 = FIPS on)",
         },
         new()
         {
@@ -454,7 +454,7 @@ public static partial class Catalog
         DefaultValue = null,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Print!RpcAuthnLevelPrivacyEnabled (1 = strict)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print!RpcAuthnLevelPrivacyEnabled (1 = strict)",
         },
         new()
         {
@@ -471,7 +471,7 @@ public static partial class Catalog
         DefaultValue = 0,
         AbsentState = TweakState.Disabled,
         RequiresReboot = true,
-        Reference = "HKLM\\...\\Lsa!NoLMHash (1 = off)",
+        Reference = "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa!NoLMHash (1 = off)",
         },
     };
 }

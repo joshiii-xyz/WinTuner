@@ -8,8 +8,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Windows.Graphics;
-using Windows.Storage;
-using Windows.Storage.Pickers;
 using WinTuner.Core.Profile;
 using WinTuner.Core.Registry;
 using WinTuner.Core.Tweaks;
@@ -547,43 +545,35 @@ public sealed partial class MainWindow : Window
         }
     }
 
-    private async void OnExport(object sender, RoutedEventArgs e)
+    // WinTuner ships unpackaged, so the WinRT file pickers are unreliable; we use
+    // the native Common Item Dialog via NativeFileDialog instead. All four profile
+    // /snapshot handlers funnel through here for one consistent failure path.
+    private IntPtr ThisWindowHandle() => WinRT.Interop.WindowNative.GetWindowHandle(this);
+
+    private void OnExport(object sender, RoutedEventArgs e)
     {
-        var picker = new FileSavePicker
-        {
-            SuggestedStartLocation = PickerLocationId.Desktop,
-            SuggestedFileName = "wintuner-profile",
-        };
-        picker.FileTypeChoices.Add("WinTuner profile", new[] { ".json" });
-
-        // WinUI file pickers require a window handle on Win32.
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
-        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
-
-        var file = await picker.PickSaveFileAsync();
-        if (file is null)
+        var path = NativeFileDialog.ShowSaveFileDialog(ThisWindowHandle(), "Export WinTuner profile", "wintuner-profile");
+        if (path is null)
         {
             return;
         }
 
-        var json = WinTuner.Core.Profile.ProfileService.Export(Catalog.All, _engine);
-        await File.WriteAllTextAsync(file.Path, json);
-        ShowStatus($"Exported {Catalog.All.Count} tweak states to {file.Name}.", InfoBarSeverity.Success);
+        try
+        {
+            var json = WinTuner.Core.Profile.ProfileService.Export(Catalog.All, _engine);
+            File.WriteAllText(path, json);
+            ShowStatus($"Exported {Catalog.All.Count} tweak states to {Path.GetFileName(path)}.", InfoBarSeverity.Success);
+        }
+        catch (Exception ex)
+        {
+            ShowStatus($"Export failed: {ex.Message}", InfoBarSeverity.Error);
+        }
     }
 
-    private async void OnImport(object sender, RoutedEventArgs e)
+    private void OnImport(object sender, RoutedEventArgs e)
     {
-        var picker = new FileOpenPicker
-        {
-            SuggestedStartLocation = PickerLocationId.Desktop,
-        };
-        picker.FileTypeFilter.Add(".json");
-
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
-        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
-
-        var file = await picker.PickSingleFileAsync();
-        if (file is null)
+        var path = NativeFileDialog.ShowOpenFileDialog(ThisWindowHandle(), "Import WinTuner profile");
+        if (path is null)
         {
             return;
         }
@@ -591,7 +581,7 @@ public sealed partial class MainWindow : Window
         string json;
         try
         {
-            json = await File.ReadAllTextAsync(file.Path);
+            json = File.ReadAllText(path);
         }
         catch (Exception ex)
         {
@@ -636,45 +626,33 @@ public sealed partial class MainWindow : Window
             failed == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning);
     }
 
-    private async void OnSnapshot(object sender, RoutedEventArgs e)
+    private void OnSnapshot(object sender, RoutedEventArgs e)
     {
-        var picker = new FileSavePicker
-        {
-            SuggestedStartLocation = PickerLocationId.Desktop,
-            SuggestedFileName = $"wintuner-snapshot-{DateTime.Now:yyyyMMdd-HHmm}",
-        };
-        picker.FileTypeChoices.Add("WinTuner snapshot", new[] { ".json" });
-
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
-        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
-
-        var file = await picker.PickSaveFileAsync();
-        if (file is null)
+        var path = NativeFileDialog.ShowSaveFileDialog(ThisWindowHandle(), "Save WinTuner snapshot", $"wintuner-snapshot-{DateTime.Now:yyyyMMdd-HHmm}");
+        if (path is null)
         {
             return;
         }
 
-        // Capture the RAW registry state of every known tweak - including values
-        // that do not exist yet - so they can be restored exactly later, even after
-        // a reboot (unlike the in-memory session backup).
-        var json = WinTuner.Core.Profile.SnapshotService.Export(Catalog.All, _engine);
-        await File.WriteAllTextAsync(file.Path, json);
-        ShowStatus($"Snapshot of {Catalog.All.Count} tweak states saved to {file.Name}.", InfoBarSeverity.Success);
+        try
+        {
+            // Capture the RAW registry state of every known tweak - including values
+            // that do not exist yet - so they can be restored exactly later, even
+            // after a reboot (unlike the in-memory session backup).
+            var json = WinTuner.Core.Profile.SnapshotService.Export(Catalog.All, _engine);
+            File.WriteAllText(path, json);
+            ShowStatus($"Snapshot of {Catalog.All.Count} tweak states saved to {Path.GetFileName(path)}.", InfoBarSeverity.Success);
+        }
+        catch (Exception ex)
+        {
+            ShowStatus($"Snapshot failed: {ex.Message}", InfoBarSeverity.Error);
+        }
     }
 
-    private async void OnRestoreSnapshot(object sender, RoutedEventArgs e)
+    private void OnRestoreSnapshot(object sender, RoutedEventArgs e)
     {
-        var picker = new FileOpenPicker
-        {
-            SuggestedStartLocation = PickerLocationId.Desktop,
-        };
-        picker.FileTypeFilter.Add(".json");
-
-        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
-        WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
-
-        var file = await picker.PickSingleFileAsync();
-        if (file is null)
+        var path = NativeFileDialog.ShowOpenFileDialog(ThisWindowHandle(), "Restore WinTuner snapshot");
+        if (path is null)
         {
             return;
         }
@@ -682,7 +660,7 @@ public sealed partial class MainWindow : Window
         string json;
         try
         {
-            json = await File.ReadAllTextAsync(file.Path);
+            json = File.ReadAllText(path);
         }
         catch (Exception ex)
         {
@@ -697,16 +675,12 @@ public sealed partial class MainWindow : Window
             return;
         }
 
-        int restored = 0, failed = 0;
         try
         {
-            // Restore under an admin context if any key is HKLM; failures are caught below.
             WinTuner.Core.Profile.SnapshotService.Restore(Catalog.All, snapshot, _engine);
-            restored = snapshot.Count;
         }
         catch (Exception ex)
         {
-            failed++;
             ShowStatus($"Snapshot restore failed: {Friendly(ex)}", InfoBarSeverity.Error);
             return;
         }
@@ -720,11 +694,7 @@ public sealed partial class MainWindow : Window
             }
         }
 
-        ShowStatus(
-            failed == 0
-                ? $"Restored {restored} tweaks to the snapshot state."
-                : $"Restored {restored} tweaks, {failed} failed (needs administrator).",
-            failed == 0 ? InfoBarSeverity.Success : InfoBarSeverity.Warning);
+        ShowStatus($"Restored {snapshot.Count} tweaks to the snapshot state.", InfoBarSeverity.Success);
     }
 
     private static string Friendly(Exception ex)
